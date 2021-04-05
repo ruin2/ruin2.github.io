@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Hausdorff空间定义：如果对于拓扑空间X中任意两个不同的点$x_1$和$x_2$，分别存在$x_1$和$x_2$的邻域$U_1$和$U_2$使得这两个邻域无交，则称X为一个Hausdorff空间. 定理：Hausdorff空间中的任何有限集都是闭的。 拓扑学核心任务：寻找拓扑不变性质 拓扑的定义：设X是一个非空集合。X的一个子集族$\tau$称为X的一个拓扑，如果它满足：  X,$\varn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础拓扑学">
+<meta property="og:url" content="http://yoursite.com/2020/10/14/%E5%9F%BA%E7%A1%80%E6%8B%93%E6%89%91%E5%AD%A6/index.html">
+<meta property="og:site_name" content="AIfuns">
+<meta property="og:description" content="Hausdorff空间定义：如果对于拓扑空间X中任意两个不同的点$x_1$和$x_2$，分别存在$x_1$和$x_2$的邻域$U_1$和$U_2$使得这两个邻域无交，则称X为一个Hausdorff空间. 定理：Hausdorff空间中的任何有限集都是闭的。 拓扑学核心任务：寻找拓扑不变性质 拓扑的定义：设X是一个非空集合。X的一个子集族$\tau$称为X的一个拓扑，如果它满足：  X,$\varn">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-14T02:11:17.000Z">
+<meta property="article:modified_time" content="2020-11-14T12:22:40.508Z">
+<meta property="article:author" content="李忠宇">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/10/14/%E5%9F%BA%E7%A1%80%E6%8B%93%E6%89%91%E5%AD%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基础拓扑学 | AIfuns</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">AIfuns</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">为中华之富强而读书</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/14/%E5%9F%BA%E7%A1%80%E6%8B%93%E6%89%91%E5%AD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李忠宇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AIfuns">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基础拓扑学
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-14 10:11:17" itemprop="dateCreated datePublished" datetime="2020-10-14T10:11:17+08:00">2020-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-14 20:22:40" itemprop="dateModified" datetime="2020-11-14T20:22:40+08:00">2020-11-14</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Hausdorff空间定义：如果对于拓扑空间X中任意两个不同的点$x_1$和$x_2$，分别存在$x_1$和$x_2$的邻域$U_1$和$U_2$使得这两个邻域无交，则称X为一个Hausdorff空间.</p>
+<p>定理：Hausdorff空间中的任何有限集都是闭的。</p>
+<p>拓扑学核心任务：寻找拓扑不变性质</p>
+<p>拓扑的定义：<br>设X是一个非空集合。X的一个子集族$\tau$称为X的一个拓扑，如果它满足：</p>
+<ol>
+<li>X,$\varnothing$都包含在$\tau$中。</li>
+<li>$\tau$中任意多个成员的并集都在$\tau$中。</li>
+<li>$\tau$中有限多个成员的交集都在$\tau$中。</li>
+</ol>
+<p>集合X和拓扑$\tau$一并称为拓扑空间。</p>
+<p>诱导拓扑：若X为拓扑空间，Y为X的子集，Y上的子空间拓扑或诱导拓扑是以X的开集与Y的交集作为这个拓扑的开集而定义的。</p>
+<p>定理：一个子集为闭集，当且仅当它包含了自己全部的极限点。</p>
+<p>定理：A的闭包是包含A的最小闭集，换句话说，是包含A的一切闭集之交。</p>
+<p>拓扑基：设集合X上有了一个拓扑，$\beta$为这个拓扑的一组开集，使得每个开集可以写成$\beta$中成员的并集，则$\beta$叫做这个拓扑的一组拓扑基。</p>
+<p>同胚：是指一个连续单一满映射，它的逆映射也连续。</p>
+<p>定理：设X为拓扑空间，$\mathcal{F}$为X的一组开集，他们的并集是整个X。这样的一组开集叫做X的 <strong>开覆盖</strong>。若$\mathcal{F}’$ 是$\mathcal{F}$的一个子集，并且若$\bigcup \mathcal{F}’=X$，则$\mathcal{F}’$叫做$\mathcal{F}$的一个子覆盖。</p>
+<p>定义：拓扑空间X紧致，假如X的任何开覆盖包含有限子覆盖。</p>
+<p> 群”是一个“ 有结构的集合”</p>
+<p> 紧致空间的无穷子集必有极限点。（如果在紧致空间内取出无穷多个点，那么这些点的分布必然在某处显得很拥挤，这就是极限点）</p>
+<p>道路：一个连续映射$\gamma{:[0,1]\rightarrow} X$</p>
+<p>定义：空间被称为道路连通的，假如它的任意两点可以用一条道路连结。$\gamma{(0)}$和$\gamma{(1)}$分别叫做道路的起点和终点。注意，若$\gamma^{-1}$定义做：</p>
+<script type="math/tex; mode=display">\gamma^{-1}{(t)} = \gamma{(1-t)} ,0 \le t \le 1</script><p>则$\gamma^{-1}$是连结$\gamma{(0)}$和$\gamma{(1)}$的一条道路。</p>
+<p>（基本群是利用空间中的道路连通构建出来的）</p>
+<p>定理：道路连通空间是连通的。</p>
+<p>粘合拓扑：设X为拓扑空间，$\mathcal{P}$为X的一族互不相交的非空子集，使得$\bigcup{\mathcal{P}}=X$ ，这样的一个族$\mathcal{P}$叫做X的一个划分。按照下述方式制造一个新空间Y，叫做粘合空间：Y是$\mathcal{P}$的成员，并且若$\pi : x\rightarrow y$将X的每点送到$\mathcal{P}$所属的成员中，而Y的拓扑是使$\pi$为连续的最大拓扑。于是，Y的子集O为开集，当且仅当$\pi^{-1}{O}$在X为开集。我们可以把Y看做是从空间X出发，把属于$\mathcal{P}$的每一子集粘合成为一点而形成的空间。</p>
+<p>定义：G是一个拓扑群，假如它既是一个Hausdorff空间，又是一个群，并且这两个结构在下述意义之下是相容的：群的乘积$m:G\times G \rightarrow G$,与群的求逆运算$i:G\rightarrow G$都是连续映射。</p>
+<p>定义：设X是一个拓扑空间，$A\subset X$.如果点$x\in X$的每一个邻域U中都有A中异于x的点，即$U \bigcap (A-{x}) \neq \varnothing$,则称点x为A的一个<strong>凝聚点</strong>或<strong>极限点</strong>。集合A的所有凝聚点构成的集合称为A的导集，记做$d(A)$，</p>
+<p>定义：设X是一个拓扑空间，$A\subset X$.集合A与A的导集$d(A)$的并$A\bigcup d(A)$称为集合A的闭包，记做$\overline{A}$</p>
+<p>定义：设X是一个拓扑空间，$A\subset X$.如果A是点$x\in X$的一个邻域，即存在X中的一个开集V使得$x\in X \subset A$，则称点x是A的一个内点。集合A的所有内点所构成的集合称为A的内部，记做$\mathring{A}$</p>
+<p>每一个球形邻域都是开集，从而任意多个球形邻域的并也是开集；另一方面，假如U是度量空间X中的一个开集，则对于每一个$x\in U$有一个球形邻域$B(x,\epsilon) \subset U$,因此$U = \bigcup_{x\in U}B(x,\epsilon)$.也就是说，一个集合是某度量空间中的一个开集，当且仅当它是这个度量空间中的若干个球形邻域的并。因此我们可以说，度量空间的拓扑是由它的所有的球形邻域的集族求并这一运算“产生”出来的。</p>
+<p>定义：设$(X,\mathcal{T})$是一个拓扑空间，$\mathcal{B}$是$\mathcal{T}$的一个子族。如果$\mathcal{T}$中的每一个元素（即拓扑空间X中的每一个开集）是$\mathcal{B}$中某些元素的并，即对于每一个$U\in \mathcal{T}$,存在$\mathcal{B}<em>1 \subset \mathcal{B}$，使得$U=\bigcup</em>{B\in \mathcal{B_1}}B$,则称$\mathcal{B}$是拓扑$\mathcal{T}$的一个基，或称$\mathcal{B}$是拓扑空间X的一个基。</p>
+<p>“子空间”实际上是从大拓扑空间中“切割”出来的一部分。这里有一个问题，概言之就是：一个拓扑空间什么时候是另一个拓扑空间的子空间？换言之，一个拓扑空间在什么条件下能够“镶嵌”到另一个拓扑空间中去？</p>
+<p>定义：设X和Y是两个拓扑空间，$f:X\rightarrow Y$，映射$f$称为一个<strong>嵌入</strong>，如果它是一个单射，并且是从X到它的像集的$f(X)$的一个同胚。如果存在$f:X\rightarrow Y$，则我们称<strong>拓扑空间X可嵌入拓扑空间Y</strong>。</p>
+<p>拓扑空间的某种性质，如果为一个拓扑空间所具有也必然为它在任何一个连续映射下的像所具有，则称这个性质是一个在<strong>连续映射下保持不变的性质</strong>。</p>
+<h1 id="点集拓扑-GTM27"><a href="#点集拓扑-GTM27" class="headerlink" title="点集拓扑 GTM27"></a>点集拓扑 GTM27</h1><p>disjoint : $A \bigcap B = 0$</p>
+<p>the absolute complement of a set A is written $\sim A$</p>
+<p>the relative complement of A is written as $X \sim A = X\bigcap \sim A$</p>
+<p>if R is a relation and A is a set,then R[A] ,the set of all R-relatives all points of A.</p>
+<p>the members of the topology of $\mathcal{T}$ are called <strong>open</strong> relative to $\mathcal{T} $</p>
+<p>normal space(p128) : a space is normal iff disjoint closed sets have disjoint neighbourhoods.And another statement is suggested that <strong>a family of neighbourhoods of a set is a base of neighbourhood system of the set iff every neighbour of the set contains a member of the family</strong></p>
+<p>regular space(p129):<strong>iff for each point x and each neibourhood U of x , there is a closed neighbourhood V of x ,such that V $\subset$ U</strong>,that is a closed neighbourhoods of each point is a base for the neighbourhood system of the point.</p>
+<p>Suppose that one-point sets are closed in X.Then X is said to be 【regular】if for each pair consisting of a point x and a closed set B disjoint from x, there exist disjoint open sets containing x and B, respectively.<br>The space X is said to be 【normal】if for each pair A,B of disjoint closed sets of X,there exist disjoint open sets containing A and B, respectively.</p>
+<p>第二可数公理：一个拓扑空间如果有一个可数基，则称这个空间满足第二可数公理。</p>
+<p>第一可数公理：一个拓扑空间如果在它的每一点处都有一个可数邻域基，则称这个可数空间是第一可数的。</p>
+<p>p129，结尾的一段很重要</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/" rel="prev" title="论文写作">
+      <i class="fa fa-chevron-left"></i> 论文写作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/29/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%AD%A6%E4%B9%A0/" rel="next" title="生成模型学习">
+      生成模型学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODg4Mi8yNTM3Ng=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#点集拓扑-GTM27"><span class="nav-number">1.</span> <span class="nav-text">点集拓扑 GTM27</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">李忠宇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李忠宇</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

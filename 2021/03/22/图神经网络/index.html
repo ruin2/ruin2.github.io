@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="github版本在这里，最好用谷歌浏览器 【图神经网络】文献阅读笔记最近在研究图神经网络相关的内容，所以写下这篇阅读笔记。个人能力有限，所以如果您在阅读的过程中找出了错误请务必指出。另不吝赐教，相互交流学习。本文也会持续更新。&amp;#x1f61b;  个人认为GNN是目前来看，唯一一个能对抗Transformer的框架了。另外，深度学习条件下的GNN的历史虽然差不多和Transformer一样，但对于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图神经网络">
+<meta property="og:url" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="AIfuns">
+<meta property="og:description" content="github版本在这里，最好用谷歌浏览器 【图神经网络】文献阅读笔记最近在研究图神经网络相关的内容，所以写下这篇阅读笔记。个人能力有限，所以如果您在阅读的过程中找出了错误请务必指出。另不吝赐教，相互交流学习。本文也会持续更新。&amp;#x1f61b;  个人认为GNN是目前来看，唯一一个能对抗Transformer的框架了。另外，深度学习条件下的GNN的历史虽然差不多和Transformer一样，但对于">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/1.gif">
+<meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2.jpg">
+<meta property="article:published_time" content="2021-03-22T08:55:49.000Z">
+<meta property="article:modified_time" content="2021-04-05T10:46:08.316Z">
+<meta property="article:author" content="李忠宇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/1.gif">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>图神经网络 | AIfuns</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">AIfuns</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">为中华之富强而读书</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李忠宇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AIfuns">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          图神经网络
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-22 16:55:49" itemprop="dateCreated datePublished" datetime="2021-03-22T16:55:49+08:00">2021-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-05 18:46:08" itemprop="dateModified" datetime="2021-04-05T18:46:08+08:00">2021-04-05</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://ruin2.github.io/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">github版本在这里，最好用谷歌浏览器</a></p>
+<h1 id="【图神经网络】文献阅读笔记"><a href="#【图神经网络】文献阅读笔记" class="headerlink" title="【图神经网络】文献阅读笔记"></a>【图神经网络】文献阅读笔记</h1><p><strong>最近在研究图神经网络相关的内容，所以写下这篇阅读笔记。个人能力有限，所以如果您在阅读的过程中找出了错误请务必指出。另不吝赐教，相互交流学习。本文也会持续更新。<span class="emoji" alias="stuck_out_tongue" style fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61b.png?v8">&#x1f61b;</span></strong></p>
+<blockquote>
+<p><em>个人认为GNN是目前来看，唯一一个能对抗Transformer的框架了。另外，深度学习条件下的GNN的历史虽然差不多和Transformer一样，但对于GNN的研究还差得太多，因此还不够深刻和彻底，这就导致了性能和应用两方面的拉胯。不过也正是GNN的各种研究方面的缺陷才让我们有了“可乘之机”，毕竟相关领域还不是太卷，广阔天地大有可为。正所谓“熟读洋屁三百篇，不会放屁也会吟”，奥利给！兄弟们干了！</em></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知，自然界的数据绝大部分都是非欧的，这些数据无头无尾，一团乱麻，处理起来非常棘手。</p>
+<p>目前的四大主流深度学习算法(算子)：全连接，CNN,RNN,ATT（我们先暂时忽略对抗，自编码以及强化学习）。它们对于图结构的数据的处理能力有限，但问题是深度学习发展到今天，也只有这几种常见的方法。这时候研究者就面临了两种选择：</p>
+<ol>
+<li>要么让算法去适应非欧的数据（改算法不改数据结构）</li>
+<li>要么让非欧的数据去适应算法（改数据结构不改算法）</li>
+</ol>
+<p>道理是这么个道理，但我的分类方法还是相对粗糙的。学术界的两种主流分类方法是：</p>
+<ol>
+<li>节点为主的建模方法，边为主的建模方法，节点和边同时建模的方法。</li>
+<li>图卷积（CNN）、时序图（RNN）、图注意力（ATT）…</li>
+</ol>
+<p>无论我们采用何种分类方式，我们总是绕不开两个核心问题：</p>
+<ol>
+<li>图的拓扑结构应该如何表示？</li>
+<li>节点和边的信息应该如何学习？</li>
+</ol>
+<p>在此，我们将图分成了两部分，即：<span class="emoji" alias="star" style fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png?v8">&#x2b50;</span>结构和信息<span class="emoji" alias="star" style fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png?v8">&#x2b50;</span>。更直白的来说，<font color="red">图=拓扑结构+信息</font>。</p>
+<p>而数学中对图的定义则是有序的节点集和边集的集合。我们所采取的这种定义方式只是比较直接的指出了图神经网络研究的主要难点，本质上和数学中的定义是相同的。我们将在后面不断的讨论这两个难点。</p>
+<p>另外，单独一个问题的研究都是没有意义的，因为去掉任何一个要素（结构或者信息）都不能构成一个完整的图。所以，我们还需要找到一种连结两个问题的方法。幸运的是，我们目前有两种方法同时处理结构和信息，一个是谱方法（特征值分解），另一个是采样。我个人比较支持采样方法。</p>
+<p>好了，既然现在我们知道了图的研究对象是其结构和信息，获取样本的方法是谱分解或者采样，那么这些数据应该如何计算呢？</p>
+<p>还记得马克思的那句话吗？<strong>人是其社会关系的总和</strong>。这句话很好的启发了我们，我们可以得到<font color="red">节点是其关系信息的总和</font>，这些关系包括了节点的邻居，邻边和其自身。然后我们将这些关系信息通过某种方式聚合起来，就可以得到该节点的表示了。</p>
+<p><img src="/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/1.gif" alt></p>
+<p>我们的学习顺序和之前的综述性文章是不太一样的。<br>我们的论文阅读顺序如下所示：</p>
+<ol>
+<li>图神经网络的基本建模思路（MPNN）</li>
+<li>采样方法（GraphSAGE等）</li>
+<li>时序图</li>
+<li>图卷积</li>
+<li>图注意力</li>
+</ol>
+<h2 id="本文统一的符号"><a href="#本文统一的符号" class="headerlink" title="本文统一的符号"></a>本文统一的符号</h2><blockquote>
+<p>先写这么多，会慢慢扩展和补充</p>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$D=(V,E)$</td>
+<td style="text-align:center">图的定义（vertex \&amp; edge）</td>
+</tr>
+<tr>
+<td style="text-align:center">$N,M$</td>
+<td style="text-align:center">节点和边的数量</td>
+</tr>
+<tr>
+<td style="text-align:center">$V = {v_1,\cdots,v_n}$</td>
+<td style="text-align:center">顶点集</td>
+</tr>
+<tr>
+<td style="text-align:center">$F^V,F^E$</td>
+<td style="text-align:center">节点、边的特征（属性）</td>
+</tr>
+<tr>
+<td style="text-align:center">$A$</td>
+<td style="text-align:center">邻接矩阵</td>
+</tr>
+<tr>
+<td style="text-align:center">$D(i,i)=\sum<em>j A</em>{ij}$</td>
+<td style="text-align:center">对角度矩阵</td>
+</tr>
+<tr>
+<td style="text-align:center">$L=D-A$</td>
+<td style="text-align:center">拉普拉斯矩阵</td>
+</tr>
+<tr>
+<td style="text-align:center">$Q\Lambda Q^T=L$</td>
+<td style="text-align:center">拉普拉斯矩阵的特征分解</td>
+</tr>
+<tr>
+<td style="text-align:center">$P=D^{-1}A$</td>
+<td style="text-align:center">转移矩阵</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathcal{N}_k(v)$</td>
+<td style="text-align:center">节点$v$的$k$阶邻居,没写$k$就是$k=1$</td>
+</tr>
+<tr>
+<td style="text-align:center">$H^l$</td>
+<td style="text-align:center">第$l$层的隐藏状态</td>
+</tr>
+<tr>
+<td style="text-align:center">$f_l$</td>
+<td style="text-align:center">$H^l$的维度</td>
+</tr>
+<tr>
+<td style="text-align:center">$\sigma(\cdot)$</td>
+<td style="text-align:center">非线性激活函数</td>
+</tr>
+<tr>
+<td style="text-align:center">$\Theta$</td>
+<td style="text-align:center">可学习的参数</td>
+</tr>
+<tr>
+<td style="text-align:center">$s$</td>
+<td style="text-align:center">采样大小</td>
+</tr>
+<tr>
+<td style="text-align:center">$T$</td>
+<td style="text-align:center">时间步</td>
+</tr>
+<tr>
+<td style="text-align:center">$U$</td>
+<td style="text-align:center">状态更新方程（update），特指隐藏层状态更新</td>
+</tr>
+<tr>
+<td style="text-align:center">$M$</td>
+<td style="text-align:center">消息（message），实际就是信息</td>
+</tr>
+<tr>
+<td style="text-align:center">$AGG$</td>
+<td style="text-align:center">聚合方程（或聚合器）（aggregater），特指节点或者边上的显示状态更新</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>===================================</p>
+<h1 id="文献阅读笔记法"><a href="#文献阅读笔记法" class="headerlink" title="文献阅读笔记法"></a>文献阅读笔记法</h1><font color="yellow">【论文题目】</font>：
+
+<font color="yellow">【概述】</font>：
+
+<font color="yellow">【需要解决的问题】</font>：
+
+<font color="yellow">【这个问题为什么重要】</font>：
+
+<font color="yellow">【解决之后有什么好处】</font>：
+
+<font color="yellow">【解决问题的前提条件或者是假设】</font>：
+
+<font color="yellow">【解决问题的具体方法】</font>：
+
+<font color="yellow">【实验】</font>：
+
+<font color="yellow">【结论】</font>：
+
+<font color="yellow">【源码解析】</font>：
+
+<font color="yellow">【个人评价】</font>：
+
+===================================
+
+# 相关术语及概念
+> 在进入正式的学习之前，我们需要对该领域的专业术语和概念进行一定的了解，方便同行之间的沟通和交流。不敢保证能达到智取威虎山的效果，但至少能保证不至于张嘴就被击毙。
+
+## A New Model for Learning in Graph Domains
+<font color="yellow">【论文题目】</font>：图领域的一种新的学习模型
+
+<font color="yellow">【概述】</font>：在一些场景中，信息是自然的以图的形式所表示的。虽然这些算法能够将图信息表示成一组向量，但通常来说，处理过程会丢失掉图的拓扑结构信息，而且其向量表示也是受算法本身约束的。这片文章提出了一种<font color="red">广义的RNN</font>，能够处理许多种图结构的信息。另外，本文提出了一些重要的图神经网络的术语和概念。
+
+<font color="yellow">【需要解决的问题】</font>：图神经网络建模方法，以及节点和边的表示方法。
+
+<font color="yellow">【解决问题的前提条件或者是假设】</font>：假设数据都可以表示成图结构的。
+
+<font color="yellow">【这个问题为什么重要】</font>：因为自然界的数据绝大多数都是以图形式出现的，所以我们必须解决图建模的基本算法问题。
+
+<font color="yellow">【解决之后有什么好处】</font>：可以用高维形式进行图表示，提升相关任务的准确率。
+
+<font color="yellow">【解决问题的具体方法及实验】</font>：
+
+1. 论文提出了节点级(node focused)和图级(graph focused)的两种建模方法，区别就是预测的时候，是预测了图的一部分信息还是预测整张图的信息。虽然我个人感觉这种分类方式已经有点过时了，而且以当前的算力来看，似乎又会造成一定程度上的混淆，所以我个人将不再讨论这个分类方式。
+
+2. 广义RNN ： 首先通过随机游走的方式得到一个序列，然后用这个序列上的每一个节点及其邻居节点作为一个子图，再把这个子图中的所有信息通过一定的方式聚合到一起，形成一个新的节点。这样，我们就得到了一个序列化的子图，而且这个序列化的子图可以直接使用RNN计算，因此就成了广义RNN。在这篇论文中，广义RNN实际上就是GNN的原型。
+3. 消息的传递、聚合和更新：
+    $$v_{t+1}=f_{\theta}(v_t,\mathcal{N}(v_t),l_{\mathcal{N}(v_t)} )$$
+    $$o(v_{t+1})=g_{\theta}(v_t,v_{t+1})$$
+    上式对应于原文中的等式$(7)$。
+
+    第一行实际上就是消息的传递，$l$是节点的标签信息，也就是说，GNN可以是有监督的，也可以是自监督的。
+
+    第二行中相当于节点信息的更新。
+
+    那么聚合体现在哪里呢？实际上原文是没有“聚合”这个概念的，传递和聚合的过程被一同合并在了$f_{\theta}$里面。
+
+    更为具体的概念我们将会在之后的论文中讨论。
+
+
+用前向传播来计算数值解
+用聚合信息的方法来计算表示解
+
+
+<font color="yellow">【结论】</font>：<font color="red">图神经网络=采样+消息传递+消息聚合+状态更新</font>。这四要素构成GNN的基石，缺一不可。
+
+<font color="yellow">【源码解析】</font>：
+
+<font color="yellow">【个人评价】</font>：这篇论文提出了最原始的采样、传递、聚合、更新的概念（虽然确切的来说，是没有聚合的概念）。让我们知道了GNN中的节点的状态参数应该如何更新。
+
+RNN可以看成是一种GNN的特例，反过来说就是：GNN是广义的RNN。再比如LSTM，其中的门控机制可以看做是聚合方程，而其马尔科夫假设也可以被看做消息传递。但GNN和RNN最大的本质区别就是节点的度。在RNN中，节点的度都是2（除了头尾），而GNN的节点度就变化万千了，因此形成了特殊的拓扑结构，也正因如此，GNN才需要各种采样技术，而RNN却不需要（RNN只需要顺序遍历即可）。虽然原文没有明确的说明，但我们读完论文就能感受到。
+
+## The Graph Neural Network Model
+<font color="yellow">【论文题目】</font>：
+
+<font color="yellow">【概述】</font>：
+
+<font color="yellow">【需要解决的问题】</font>：
+
+<font color="yellow">【解决问题的前提条件或者是假设】</font>：
+
+<font color="yellow">【这个问题为什么重要】</font>：
+
+<font color="yellow">【解决之后有什么好处】</font>：
+
+<font color="yellow">【解决问题的具体方法及实验】</font>：
+
+<font color="yellow">【结论】</font>：
+
+<font color="yellow">【源码解析】</font>：
+
+<font color="yellow">【个人评价】</font>：
+
+
+## Introduction to GraphNeural Networks
+在我的印象中这是比较早的几篇综述文章之一。我们仅截取其中一节：第四节，Vanilla Graph Neural Networks。这一节讲道理是我最喜欢的，介绍的
+
+<font color="yellow">【论文题目】</font>：图神经网络介绍之图神经网络初代机
+
+<font color="yellow">【概述】</font>：
+
+<font color="yellow">【需要解决的问题】</font>：
+
+<font color="yellow">【解决问题的前提条件或者是假设】</font>：
+
+<font color="yellow">【这个问题为什么重要】</font>：
+
+<font color="yellow">【解决之后有什么好处】</font>：
+
+<font color="yellow">【解决问题的具体方法及实验】</font>：
+
+<font color="yellow">【结论】</font>：
+
+<font color="yellow">【源码解析】</font>：
+
+<font color="yellow">【个人评价】</font>：
+
+## Neural Message Passing for Quantum Chemistry
+<font color="yellow">【论文题目】</font>：<font color="cyan">量子化学的消息传递神经网络</font>
+
+<font color="yellow">【概述】</font>：化学分子可以看做是图结构，而图结构又有许多相似之处，所以可以用一种监督学习的方法来预测分子的属性，并为新药发现和材料科学做贡献。传统的监督学习方法已经取得了很好的效果，但是作者希望能够用深度学习的方法把成果推广开来。因此他们发明了MPNN框架，并希望在此框架下，各种算法变体能取得进一步的准确度，达到数据集的极限。
+
+<font color="yellow">【需要解决的问题】</font>：设立一个图算法的框架，并在这个框架下寻找更多更准确更快速的，用于预测分子属性的变体模型。
+
+<font color="yellow">【这个问题为什么重要】</font>： 快速解决分子和材料的属性预测。
+
+<font color="yellow">【解决问题的前提条件或者是假设】</font>：
+
+1. 在同一种图框架下
+2. 算法不受同构（例如化学中的手性）的影响
+3. 算法的计算效率足够高
+
+<font color="yellow">【解决之后有什么好处】</font>：
+
+ 1. 预测时间会下降。用DFT(离散傅里叶变换)做预测需要$10^3$量级的时间，而使用MPNN则可以降低到$10^{-2}$量级。
+ 2. 找到更多的变体模型，这些模型可以完全准确的预测到分子属性，或者是逼近预测的极限。
+ 3. 可以促进新药发现和材料科学。（天坑专业自救指南）
+
+
+<font color="yellow">【解决问题的具体方法及实验】</font>：
+
+**在算法方面**：
+
++ 节点之间的消息传递：
+
+
+    $m_v^{t+1} = \sum_{w \in N(v)} M_t(h_v^t,h_w^t,F^{e})$
+
+    上式的含义是，节点$v$的消息传递是汇聚了它自身的信息$h_v^t$以及它邻居节点的消息$h_w^t$和邻边的消息$F^{e}$。但凡能用上的消息基本都用上了。
+
+
++ 消息更新的方式：
+
+    $h_v^{t+1}=U(h_v^t,m_v^{t+1})$
+
+    这里只需要说一下$U$实际上是一个状态更新函数。通常用`add`,`mean`,`max`.但`max`是不可微的，所以使用的时候要注意。
+
++ 图表征方法（readout）:
+
+    $y=R(\{h_v^T|v \in G\})$
+
+    $y$是一个向量，它表征了整个图。
+
+
+
+
+**在实验数据方面**，本论文在其开发的图建模环境MPNN下，通过错误率和运行时间两方面来证明MPNN框架的可行性和实用性。但是具体的数据我并没有认真研究，因为MPNN的亮点是其图建模的思想（毕竟我太菜了，也找不到比MPNN更早的相关研究了。主要是懒）。
+
+
+
+
+<font color="yellow">【结论】</font>：MPNN确实从准确率和运行时间两方面达到了理想的结果。并且实现了一些图建模的最基本要素，如：消息传递，节点和边的参数更新，图表征（readout，我翻译成图表征，因为readout指的是把一张图表示为一个向量。）
+
+<font color="yellow">【源码解析】</font>：MPNN确实是有一套自己的代码框架，但是我水平有限，没有看懂<span class="emoji" alias="joy" style fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f602.png?v8">&#x1f602;</span>。不过MPNN的基本思想被研究者们广泛认同，被PYG（pytorch_geometric）继承，然后PYG有被OGB（open graph benchmark）所继承，所以我们来看一下OGB的源码即可<span class="emoji" alias="smile" style fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png?v8">&#x1f604;</span>。（torch\geometric\nn\conv\message_passing.py）
+
+[关于OGB，可以参考这篇文章](https://zhuanlan.zhihu.com/p/165996331)
+
+[MPNN的英文文档](https://pytorch-geometric.readthedocs.io/en/latest/notes/create_gnn.html)
+
+首先，在OGB中，我们定义MPNN的算法框架：
+
+$$v^{t+1} = \gamma_t(v^t,\square_{u\in \mathcal{N(v)}} \phi(v^t,u^t,F^e))$$
+
+其中，$\square$是一个可微的且组合不变的方程，比如`sum`,`mean`,`max`。而$\gamma$和$\phi$则是任意可微方程，如MLP（全连接）。在本文中，$\gamma$就相当于$U$或者$AGG$，$U$和$AGG$的区别仅限于运算的对象，是负责聚合和更新信息的。而$\phi$则相当于$M$，负责收集信息。
+
+`MessagePassing`类内有三个主要方法：
+
+- `MessagePassing.propagate(edge_index, size=None, **kwargs)`:该方法的输入参数是`edge_index`，知道了边的编号之后，自然就知道了输入节点$v$和输出节点$u$了。该方法会在内部调用`MessagePassing.aggregate`和`MessagePassing.update`。实际上，每次采样的结果就相当于一个子图，而且这个子图还是一个二部图。
+- `MessagePassing.message`：相当于$\phi_{\mathbf{\Theta}}$。这个方法的输入就是`MessagePassing.propagate`的输入，
+- `MessagePassing.aggregate`:相当于$\square_{u\in \mathcal{N(v)}}$，
+- `MessagePassing.update`:相当于$\gamma_{\mathbf{\Theta}}$这一部分，对每一个节点$v$进行聚合。其输入是`MessagePassing.aggregate`的输出。
+
+
+
+
+
+
+
+<font color="yellow">【个人评价】</font>：
+MPNN的思想非常简单且可行：节点就是其关系的总和。简单好用易于理解，所以成为了OGB的基础层。
+
+# 图上的采样方法
+
+## DeepWalk: Online Learning of Social Representations
+
+<font color="yellow">【论文题目】</font>：<font color="cyan">深度随机游走：社团表示的在线学习</font>
+
+<font color="yellow">【个人评价】</font>： 真·随机游走。第一个使用深度优先采样的图深度学习方法。
+
+## LINE: Large-scale Information Network Embedding
+
+<font color="yellow">【论文题目】</font>：【LINE】大规模信息网络嵌入
+
+<font color="yellow">【概述】</font>：LINE使用了广度优先采样+深度优先采样
+
+<font color="yellow">【需要解决的问题】</font>：大规模网络节点的向量空间嵌入问题
+
+<font color="yellow">【解决问题的前提条件或者是假设】</font>：
+
+![](图神经网络/4.jpg)
+
+从直觉的角度来说，两个有着相同朋友圈的人，其兴趣也应该接近，因此这两个人很有可能成为好朋友。从上图中的5，6节点可以看出，这两个节点有着相同的“朋友圈”，所以他们之间的向量应该较为接近。
+
+另外，6，7的嵌入向量也应该接近，因为这两个节点是直接相连（而且关系也比较强，因为边比较粗）
+
+根据以上两个直觉，LINE定义了两种相似度。
+
+1. 一阶相似：类似于6，7。如果两个节点之间没有边**直接**相连，这两个节点的一阶相似就是0.
+2. 二阶相似：类似于5，6。如果两个节点之间没有相邻的其它节点，那么这两个节点的二阶相似度就是0.
+
+<font color="yellow">【这个问题为什么重要】</font>：图数据是离散的。如果能把节点信息向量化，那么我们可以获得**更丰富的表示信息**。这些表示信息对后续任务的帮助巨大。
+
+<font color="yellow">【解决之后有什么好处】</font>：这种采样方法相当于NLP的pre-train。对下游任务是有很大帮助的。
+
+<font color="yellow">【解决问题的具体方法】</font>：
+
+LINE的目标函数是一个由一阶相似和二阶相似共同拼凑的。
+
+首先是一阶近似的目标函数：
+
+1. 定义两个节点之间的概率
+$$p_{ij} = \frac{1}{1+exp(-v_i,v_j)} \tag{1}$$
+
+2. 定义两个节点之间的经验概率。这里需要说明的是，$z_{ij}$是一个非0即1的数。因为边权的数值是不确定的，有时候很大有时候很小，这会导致梯度的大幅波动，因为方差实在是太大了。所以作者很巧妙的使用了01数值来局部归一化。所以，$Z$就代表了边权的数值（只能是整数），$z_{ij}$要看两个节点间是否有边相连，有就是1，没有就是0.
+$$\hat{p}_{ij} = \frac{z_{ij}}{Z} \tag{2}$$
+$$Z = \sum_{(i,j)\in E}z_{ij}$$
+
+3. $(1)$和$(2)$代表了两个节点之间的相关性，那么我们直接联立两个方程，就可以得到一个误差值，这个误差值就代表了两个节点的一阶相似度（也可以看成是距离）。在原文中，作者使用了KL散度来计算这个距离。
+$$d(p,\hat{p}) = KL(p,\hat{p}) = \sum_{(i,j)\in E}z_{ij}\log{p(v_i,v_j)}$$
+
+然后是二阶近似的目标函数：
+
+根据之前对二阶近似的定义，如果想计算两个节点之间的二阶近似的目标函数，就是看看第二个节点在第一个节点的朋友圈（目标节点的全部邻居）当中的份量。
+
+这个份量，就可以用**条件概率**来描述。
+
+1. 定义条件概率
+
+$$p(v_j|v_i) = \frac{exp(v_i \cdot v_j)}{\sum_{\mathcal{v_k \in N(v_i)}}exp(v_k \cdot v_i)} \tag{4} $$
+
+2. 计算二阶相似度。其中，$\lambda$代表节点的权值，毕竟节点和节点的重要程度也是不一样的。同样的，$d$也是用KL散度代替。然后把$(5)$式化简一下，就能得到$(6)$
+
+$$O_2 = \sum_{v_k\in \mathcal{N}(v_i)} \lambda_i d(\hat{p}(\cdot|v_i),p(\cdot|v_i)) \tag{5}$$
+
+$$O_2 = \sum_{v_k\in \mathcal{N}(v_i)} z_{ij} \log{p(v_j|v_i)} \tag{6}$$
+
+但比较拉胯的是，原文里的训练方法是分别训练，然后把两种近似情况得到的向量拼接在一起。
+
+
+
+
+
+
+
+
+
+
+
+<font color="yellow">【实验】</font>：
+
+<font color="yellow">【结论】</font>：仅从采样方法来看，LINE = deepwalk + BFS。采样的方法变多了，因此能够得到更好的效果。
+
+<font color="yellow">【源码解析】</font>：
+
+这个算法的问题我个人感觉非常大（先写着，以后慢慢补充）。因为论文为了省时省力（可能是受限于当时的硬件设备），context变量本来是$v_i$的全部邻居节点，但结果却只是$v_j$的嵌入。
+
+<font color="yellow">【个人评价】</font>：
+
+低情商：这个算法有问题
+
+高情商：这个算法仍旧有很大的改进空间。
+
+开个玩笑。实际上LINE可以看做是DEEPWALK的改进，毕竟deepwalk只是用了DFS做采样，而LINE用了BFS。但LINE的问题我个人认为有两处。
+
+1. 在一阶相似的定义方面：我们观察公式可以发现，$p$是节点向量的内积，而$\hat{p}$是与节点之间的边权相关的量。一阶相似的目标函数是希望内积和边权尽量相同。我们现在用极端条件来验证一下：
+   + 当$v_i=v_j$时，带入公式$(1)$可得：$p = \frac{1}{1+exp(-1)} =0.73$。这个误差大概是0.27
+
+   + 当$v_i \perp v_j$时，带入公式$(1)$可得：$p =\frac{1}{1+exp(0)}= 0.5$,这个误差是0.5
+
+   所以，我个人认为用内积来定义相似度是没有问题的，但问题出在相似度的解析方程，至少文中给出的解析方程是有问题的。另外，LINE将相似度与边权划等号，在直觉上是说得通的，但更具体的形式还要继续探索。
+2. 在二阶相似的定义方面：因为在源码中，$v_j$的向量和context(也就是$v_k$，是$v_i$的全部邻域)的向量实际上都是依靠$v_j$做嵌入的，所以当前节点$v_i$的邻域信息，也就是BFS采样，并没有充分利用。如果简化来看，这种方法甚至比deepwalk还简单（LINE在极端条件下实际上就采样了一个点...也就是$v_j$）。
+
+
+## Inductive Representation Learning on Large Graphs
+
+<font color="yellow">【论文题目】</font>：<font color="cyan"> 大图的归纳表示学习 </font>
+
+<p><font color="yellow">【概述】</font>：之前的节点嵌入方法都是直接计算一整个较小的图，因此泛化能力差，而且对于新的节点的嵌入显得束手无策。本文采用近邻采样的方法对大图中的节点的嵌入向量进行学习。这种学习方法并非传统的直接学习节点的向量表示，而是去训练聚合器来间接学习节点的向量表示。而且学习目标不仅仅是节点的向量表示，还包括了节点的分布。这种方法速度快，效果好，对未知的节点嵌入也有较高的鲁棒性。</p>
+<p><font color="yellow">【需要解决的问题】</font>：大图中的节点表示学习</p>
+<p><font color="yellow">【解决问题的前提条件或者是假设】</font>：大图</p>
+<p><font color="yellow">【这个问题为什么重要】</font>：节点的向量表示是下游任务的基础。不解决这个问题很难搞下去。</p>
+<p><font color="yellow">【解决之后有什么好处】</font>：解决了节点向量的表示，才能为之后的任务服务。比如推荐系统，只有解决了当前用户节点的表示，才能为新用户的行为进行预测。</p>
+<p><font color="yellow">【解决问题的具体方法及实验】</font>：</p>
+<p><img src="/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/3.jpg" alt="GraphSAGE算法示意图"></p>
+<p>如图所示：</p>
+<p>(1)表示一个节点的1阶邻居和2阶邻居，这些就是我们所要聚合的信息。</p>
+<p>(2)表示对当前节点的信息以及它邻居的信息进行聚合。我们可以很清楚的看到，1阶聚合器和2阶聚合器是不同的，这也很好理解，毕竟你亲戚的亲戚不一定是你的亲戚。所以要区别对待。</p>
+<p>(3)则是一个目标函数，要求当前节点去预测他的邻居以及其自身的标签。（有点类似于word2vec的CBOW步骤）</p>
+<p>算法的伪代码如下所示：</p>
+<p><img src="/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2.jpg" alt></p>
+<p>步骤4聚合了全部的邻居信息，而步骤5则是对当前节点的状态更新。步骤7则是一个常见操作，因为不断的聚合会使节点的模长爆炸，所以需要把隐藏层的模长限定在$[0,1]$之间。这个操作就是求一个向量的单位向量。</p>
+<p>最后是目标方程。</p>
+<script type="math/tex; mode=display">J = -log(\sigma(z_u^Tz_v)) - Q\mathbb{E}_{v_n \sim P_{n}(v) }log(\sigma(z_u^Tz_{v_n}))</script><p>其中，$\sigma$代表了softmax函数，$z_u$是邻居节点的向量，$z_v$是中心节点的向量。$z_u^Tz_v$代表了两者之间的内积，并用内积来代表相似度。而$P$则代表了负采样，$v_n$就是那个被负采样出来的虚假中心节点，它和$z_u$之间的内积自然会小。所以就用这样一真一假的操作让聚合器去学习。至于Q，那就是负采样的样本个数了。</p>
+<p><font color="yellow">【结论】</font>：</p>
+<p><font color="yellow">【源码解析】</font>：该方法的实现是较为简单的，主要就是将聚合器替换为一种带参的方程，之前提到过的四种常见算子大家有兴趣都可以挨个试一遍。（我太懒了，实际上也根本没有实践过。。。而论文的实际效果又不一定那么好，所以有空还是需要去写一遍代码的。）</p>
+<p><font color="yellow">【个人评价】</font>：从直接学习转变为间接学习，可以说这个idea是可以的，反正我是想不出来。当然了，光有idea还是不够的，还必须work。我觉得GraphSAGE不仅能work还work的很好的主要原因是它的可学习参数加对了地方。因为在之前的聚合器一般都是选用<code>mean</code>,<code>add</code>等一些不带参的方程，但GraphSAGE突破了传统（虽然我也不清楚在此之前是否有人提出过这个问题）。转念一想，什么直接学习间接学习的，在深度学习里，参数的多寡是决定算法上限的最重要标准（毕竟都是拟合）。如果后来人能发现其他增加参数量的地方也一样可以发一篇好文章。</p>
+<h2 id="Adaptive-Sampling-Towards-Fast-Graph-Representation-Learning"><a href="#Adaptive-Sampling-Towards-Fast-Graph-Representation-Learning" class="headerlink" title="Adaptive Sampling Towards Fast Graph Representation Learning"></a>Adaptive Sampling Towards Fast Graph Representation Learning</h2><p>【论文题目】：面向图表示学习的自适应采样方法</p>
+<p>【需要解决的问题】：</p>
+<pre><code>1. 大规模图数据在训练时的采样问题
+2. 我个人另外一个理解是：能优化期望的估计值。
+</code></pre><p>【这个问题为什么重要】：因为大规模的图数据会导致内存爆炸或者运算量过大的问题<br>【解决之后有什么好处】：<br>【解决问题的具体方法及实验】：<br>【结论】：</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" rel="prev" title="预处理语言模型">
+      <i class="fa fa-chevron-left"></i> 预处理语言模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/27/README/" rel="next" title="README">
+      README <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODg4Mi8yNTM3Ng=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#【图神经网络】文献阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">【图神经网络】文献阅读笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文统一的符号"><span class="nav-number">1.2.</span> <span class="nav-text">本文统一的符号</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文献阅读笔记法"><span class="nav-number">2.</span> <span class="nav-text">文献阅读笔记法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaptive-Sampling-Towards-Fast-Graph-Representation-Learning"><span class="nav-number">2.1.</span> <span class="nav-text">Adaptive Sampling Towards Fast Graph Representation Learning</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">李忠宇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李忠宇</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

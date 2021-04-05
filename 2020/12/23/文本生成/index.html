@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="写在最前面的逻辑导图如果看晕了就可以回过头看一下这个，整理思路。 主线剧情 句子可以用一个联合概率分布来描述 但是联合的不好算，我们用贝叶斯全概率公式改写成条件概率分布 条件概率分布是链式的，可以用递归的方法计算 自然而然的得到seq2seq结构 针对seq2seq的固有问题，提出attention解决方案 绕了一圈又突然发现attention就可以直接求解联合分布 深度学习的哲学1：不好算的东西">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文本生成">
+<meta property="og:url" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/index.html">
+<meta property="og:site_name" content="AIfuns">
+<meta property="og:description" content="写在最前面的逻辑导图如果看晕了就可以回过头看一下这个，整理思路。 主线剧情 句子可以用一个联合概率分布来描述 但是联合的不好算，我们用贝叶斯全概率公式改写成条件概率分布 条件概率分布是链式的，可以用递归的方法计算 自然而然的得到seq2seq结构 针对seq2seq的固有问题，提出attention解决方案 绕了一圈又突然发现attention就可以直接求解联合分布 深度学习的哲学1：不好算的东西">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E5%AE%89%E5%A8%9C.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E9%A9%AC%E5%86%AC%E6%A2%85.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%80%81%E5%85%AB.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/att.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/jdf.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/7.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/%E8%AE%BA%E6%96%87/8.jpg">
+<meta property="article:published_time" content="2020-12-23T01:40:47.000Z">
+<meta property="article:modified_time" content="2020-12-28T09:49:08.487Z">
+<meta property="article:author" content="李忠宇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/3.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>文本生成 | AIfuns</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">AIfuns</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">为中华之富强而读书</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李忠宇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AIfuns">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          文本生成
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-23 09:40:47" itemprop="dateCreated datePublished" datetime="2020-12-23T09:40:47+08:00">2020-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-28 17:49:08" itemprop="dateModified" datetime="2020-12-28T17:49:08+08:00">2020-12-28</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="写在最前面的逻辑导图"><a href="#写在最前面的逻辑导图" class="headerlink" title="写在最前面的逻辑导图"></a>写在最前面的逻辑导图</h1><p>如果看晕了就可以回过头看一下这个，整理思路。</p>
+<h2 id="主线剧情"><a href="#主线剧情" class="headerlink" title="主线剧情"></a>主线剧情</h2><ol>
+<li>句子可以用一个联合概率分布来描述</li>
+<li>但是联合的不好算，我们用贝叶斯全概率公式改写成条件概率分布</li>
+<li>条件概率分布是链式的，可以用递归的方法计算</li>
+<li>自然而然的得到seq2seq结构</li>
+<li>针对seq2seq的固有问题，提出attention解决方案</li>
+<li>绕了一圈又突然发现attention就可以直接求解联合分布</li>
+<li>深度学习的哲学1：不好算的东西都交给神经网络去拟合，我们用attention算法来拟合联合概率分布。</li>
+<li>深度学习的哲学2：大力出奇迹，如果一层attention不能拟合联合分布，那就叠100层。</li>
+<li>深度学习的哲学3：能用显卡解决的问题，就不要用算法。几十层attention堆叠的BERT就这么被搞出来了。而且BERT的原理十分简单（相对于传统的机器学习），但是效果又出奇的好，是NLP的里程碑。</li>
+<li>既然有了求解联合分布的BERT，那么文本生成任务实际上就可以看成是全概率公式的逆向运用，用条件概率（也就是不完整的输入）去求联合分布（完整的文本）</li>
+<li>整 上 花 活：当我们不再满足于单个句子的联合分布的计算的时候，比如对话或者长文本生成，这时候，针对更长的文本的联合分布的计算，我们就需要用mask方法了。虽然这个方法的名字叫做【掩码】，但实际上它的作用相当于胶水。</li>
+</ol>
+<h1 id="什么是文本生成？"><a href="#什么是文本生成？" class="headerlink" title="什么是文本生成？"></a>什么是文本生成？</h1><p>文本生成在计算机领域指的是用算法生成可读的文本(让代码说人话)，所谓的人话就是自然语言，这东西极其复杂，因此与自然语言相关的任务大都是非常棘手的。</p>
+<h2 id="文本生成的局限性"><a href="#文本生成的局限性" class="headerlink" title="文本生成的局限性"></a>文本生成的局限性</h2><ol>
+<li>模型的自然语言理解和语义分析。</li>
+<li>长程依赖和全局一致</li>
+<li>融入知识图谱</li>
+</ol>
+<p>以上这三条摘抄自一片综述性文章，都是NLP中的困难问题，当然也是研究的重点方向。</p>
+<h1 id="经典的Seq2Seq"><a href="#经典的Seq2Seq" class="headerlink" title="经典的Seq2Seq"></a>经典的Seq2Seq</h1><div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/3.png" width="XXX" height="XXX">
+* </div>
+
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>Seq2Seq模型是一种基于RNN的序列学习模型，其主要的工作原理是求解条件概率。(不要太在意下标，问题不大)</p>
+<script type="math/tex; mode=display">p(x_0) = p(x_0|x_1,x_2,x_3,...,x_n)</script><p>例如给定一个句子：</p>
+<blockquote>
+<p>今天晚上去吃麻辣【】</p>
+</blockquote>
+<p>我们已经给定了“今天晚上去吃麻辣”这几个字符，也就是对应的$x_1$至$x_n$。那么现在，我们的任务就是求解【】内的内容。所以，今天晚上究竟是吃麻辣小龙虾还是麻辣香锅，这个问题就是神经网络所需要解决的重点了。</p>
+<p>对应实际的问题，我们可以将公式写成如下形式：</p>
+<script type="math/tex; mode=display">sentence = \{x_0,x_1,x_2,x_3,...,x_n\}</script><p>其中，sentence是由$n$个单词组成的有序集合。只有当这些单词有序的时候，整个句子才会产生意义。虽然我们不知道自然语言的结构形式，但至少我们可以从概率的角度先进行考虑：</p>
+<script type="math/tex; mode=display">P(sentence) = P(x_0,x_1,x_2,x_3,...,x_n)</script><p>但问题是上式右边是一个联合分布，求解困难。当然，如果加入一点马尔科夫的思想，这个联合分布讲道理还是可以计算出来的，也确实有这种算法，那就是n元语法：</p>
+<blockquote>
+<p>n元语法((n-gram grammar)建立在马尔可夫模型上的一种概率语法.它通过对自然语言的符号串中n个符号同时出现概率的统计数据来推断句子的结构关系.当n=2时，称为二元语法，当n = 3时，称为三元语法.</p>
+</blockquote>
+<p>我们可以退而求其次，继续将公式改写成如下形式：</p>
+<script type="math/tex; mode=display">P(sentence) = p(x_0)p(x_1|x_0)p(x_2|x_0,x_1)\cdots p(x_n|x_0,x_1,\cdots,x_{n-1})</script><p>这样，我们就得到了一个贝叶斯视角下的句子建模了。上式是计算可行的，其中$n$并非趋近于无穷，因为一个句子总是有结束的时候。甚至当我们不开心的时候可以指定$n=1$，这就对应了一个字的回复。</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/5.png" width="XXX" height="XXX">
+</div>
+
+<p>那么应该如何计算呢？<br>我们可以递归的计算：先求第一个字的概率，然后将答案作为输入，输入神经网络中再计算第二个字的概率。。。这就是递归神经网络（RNN）了。</p>
+<p>随着硬件计算能力的进步，现在的RNN一般都是结合n元语法的思想，每次的输入都是n个字符，然后去求第n+1个字符。</p>
+<p>这时候，我们就可以自然而然的得出seq2seq结构了。</p>
+<h2 id="seq2seq的结构"><a href="#seq2seq的结构" class="headerlink" title="seq2seq的结构"></a>seq2seq的结构</h2><div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/2.png" width="XXX" height="XXX">
+</div>
+encoder-decoder框架如上图所示，中间的那个“语义编码c”实际上相当于链接encoder-decoder的桥梁。我们很自然而然的觉得问题不大，但实际上这其中却蕴藏着一定的不合理：在训练阶段，模型有着明确的目标。但在测试阶段，模型就没了目标。就好比读书的时候老师会告诉你要学什么，但是工作之后就基本再也没有人管你了，唯一关心你（工作进度）的人就是产品经理了。
+
+这个现象（笔者也是最近才听说）被称为Teacher-Foring，确实很形象。当模型没有了训练阶段的压力之后就会放飞自我。例如tensorflow官网的一个教程，用LSTM生成文本，以下是第4000轮的结果。尽管有些短文本已经能读的足够通顺，但是整体上还是拉胯。
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/安娜.png" width="XXX" height="XXX">
+</div>
+
+<p>究其原因，最主要问题是RNN的长程依赖问题，形象的说就是“记不住”和“记得太死”。当然后来的LSTM和GRU都在一定程度上缓解了这个问题，但还是治标不治本。这里就需要提到一个概念：Exposure Bias</p>
+<blockquote>
+<p>Exposure Bias 是在RNN（递归神经网络）中的一种偏差,即 RNN 在 训练(training) 时接受的标签是真实的值(ground truth input)，但测试 (testing) 时却接受自己前一个单元的输出(output)作为本单元的输入(input)，这两个setting不一致会导致误差累积error accumulate,误差累积是因为，你在测试的时候，如果前面单元的输出已经是错的，那么你把这个错的输出作为下一单元的输入，那么理所当然就是“一错再错”，造成错误的累积。</p>
+</blockquote>
+<p>Exposure Bias给我的感觉实际上是这样的：</p>
+<p>工程师：马冬【梅】</p>
+<p>RNN:马什么梅？</p>
+<p>工程师：马【冬】梅</p>
+<p>RNN：什么冬梅？</p>
+<p>工程师：最后一遍，马冬梅，记住了吗？！</p>
+<p>RNN：记住了记住了。</p>
+<p>工程师：马什么梅？</p>
+<p>RNN：马化腾</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/马冬梅.png" width="XXX" height="XXX">
+</div>
+
+
+
+<p>那有的小朋友就会问了，为啥呢？</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/1.jpg" width="XXX" height="XXX">
+</div>
+
+
+
+<p>为了回答小朋友的这个问题，我们可以设想，如果现在机器预测出了一个【小】字，那你以为最终结果一定会是【小龙虾】吗？当然不一定，一旦变成【小汉堡】，整个模型的level就拉胯了。</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/老八.png" width="50" height="XXX">
+</div>
+
+<p>其根本原因是递归问题都存在长程依赖和局部最优问题。</p>
+<ol>
+<li>长程依赖：RNN是递归求解的序列模型，因此当序列（本文我们就单指文本序列）足够长的时候，最开始的几个字就可能会被遗忘，因此不构成训练的依赖。就比如你还记得这篇文章的最开始是那几个字吗？所以，再回头看安娜·卡列尼娜的那个文本生成模型，长句基本都是很拉胯。</li>
+<li>局部最优问题：我们以【麻辣小龙虾】为例，对于【麻辣小】这三个字来说，【龙虾】是他的最优解，因为【麻辣小】+【龙虾】构成了我们爱吃的麻辣小龙虾。但是对于【小】这个字来说，有可能【汉堡】是他的最优解，毕竟曾经的小汉堡几乎全网尽人皆知。。。但是【麻辣小汉堡】就有点意义不明。这个例子就是说，如果模型每一次都选择它所认为的“最优解”，最终有可能每一步的选择都是“正确”的，但得到的结果却是错误的。</li>
+</ol>
+<p>虽然我们可以用Beam-Search来解决搜索问题，但beam-search只能说是缓解了局部最优的问题（因为自然语言并不是一个最优化的问题，但目前来看我们很难找到其他的解决方案，所以我们就需要先解决局部最优化的问题）。顺着这个思路，我们也可以加长RNN的长度和深度，毕竟大力出奇迹。</p>
+<blockquote>
+<p>其实，写到这里的时候我就突然想起来我国科学家当年试东风1号导弹，（忘记了什么原因）导致航程不够，无法在靶点爆炸。当时的大部分方案都是加入更多的燃料，但这又会增加弹体重量，那不就飞不动了吗。唯独一个年轻人的方案是抽出燃料，理论上也确实可行（大佬就是大佬）。最后还真的成功了。</p>
+</blockquote>
+<p>所以，考虑到beam-search和大力出奇迹的方案都是增加计算量，我们可以反向思考，比如用mask的方法盖住几个词。这个方法苏神已经帮我们做了，可以去看他的<a href="https://kexue.fm/archives/7259" target="_blank" rel="noopener">博客</a>。</p>
+<h2 id="我们到底在干什么？"><a href="#我们到底在干什么？" class="headerlink" title="我们到底在干什么？"></a>我们到底在干什么？</h2><p>说了这么多，我们到底在解决什么问题？</p>
+<p>继续观察这个公式：</p>
+<script type="math/tex; mode=display">P(sentence) = p(x_0)p(x_1|x_0)p(x_2|x_0,x_1)\cdots p(x_n|x_0,x_1,\cdots,x_{n-1})</script><p>只看右边：</p>
+<script type="math/tex; mode=display">p(x_0)p(x_1|x_0)p(x_2|x_0,x_1)\cdots p(x_n|x_0,x_1,\cdots,x_{n-1})</script><p>每一个$p(\cdot)$都代表着一个字，如果将这些字看做节点，实际上我们就是在寻找一个“最优”的路径把他们都链接起来。当然了，如果你回过头去看这张图：</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/2.png" width="XXX" height="XXX">
+</div>
+
+<p>就会发现，“桥梁”只有一条。</p>
+<p>众所周知，一条路只能链接两个城市。如果写成公式，那就是：</p>
+<script type="math/tex; mode=display">p(x_0)p(z)p(x_1|x_0)p(z)p(x_2|x_0,x_1)\cdots p(z)p(x_n|x_0,x_1,\cdots,x_{n-1})</script><p>$p(z)$就是神经网络所要拟合的参数之一(对应于上图的“语义编码c”)，它告诉了句子应该以什么样的概率转移为另一个概率。</p>
+<p>单一的$p(z)$显然是不充分的，【马】这个字显然是不能以相同的概率转移为马冬梅或者马化腾或者马云。</p>
+<p>所以，为了造更多的“桥”：</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/4.png" width="XXX" height="XXX">
+</div>
+
+<p><a href="https://blog.csdn.net/tg229dvt5i93mxaq5a6u/article/details/78422216" target="_blank" rel="noopener">参考博客</a></p>
+<p>注意力机制就应运而生了。</p>
+<h1 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h1><script type="math/tex; mode=display">self\, attention = Softmax(\frac{QK^T}{\sqrt{d}})V</script><p>其中的QKV同一个东西的三种投影。所以，如果不看softmax一项，整个公式实际上是在求非归一化的联合概率分布。</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/att.png" width="XXX" height="XXX">
+</div>
+
+<p>假设上图就是self attention的计算结果，每一行每一列的和都不是1，所以没有归一化。但从感觉上来看，这东西长的可真的像联合分布的计算结果啊！我们随便上网找一张联合分布的图片:</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/jdf.png" width="XXX" height="XXX">
+</div>
+
+<p>简直神似啊！</p>
+<p>仔细一想…好像又绕回了最初的原点。<br>我们来分析一下：</p>
+<ol>
+<li>早期的NLP探索者们用n元语法模型去求解联合分布，但是受制于当时的硬件条件，所以n元语法模型的探索也都止步在个位数。</li>
+<li>后来出现了word2vec，滑动窗口实际上相当于n元语法中的n，但窗口大小依旧没有突破个位数。</li>
+<li>神经网络大行其道，RNN递归求解条件概率，直逼联合分布。</li>
+</ol>
+<p>但是随着seq2seq问题的研究（主要是当年研究自动翻译的那些学者，著名的attention公式就是从Transformer的研究中诞生的），大家突然发现，直接用attention去求联合分布不就OJBK了吗？？？</p>
+<p>然后就出现了不讲武德的BERT，虽然算法层面没有太多的进步，但是从深度学习的哲学水平上来看，这波BERT在大气层。（一部分算法工程师的梦想是用数学的方法去解决复杂的问题，但是另外一批算法工程师直接对复杂问题重拳出击）</p>
+<div align="center">
+<img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/6.png" width="300" height="XXX">
+</div>
+
+<!-- 简单的改动，极致的享受 -->
+<h2 id="mask方法：建造跨海大桥"><a href="#mask方法：建造跨海大桥" class="headerlink" title="mask方法：建造跨海大桥"></a>mask方法：建造跨海大桥</h2><p>我们知道，自然语言是有其结构信息的，而问题在于我们对自然语言的结构知之甚少。从小学开始我们就要一直学习语法，定语从句，倒装句之类；将语法结构应用于自然语言处理也确实是NLP的最初之路。但这种路子很快就被证明是走不通的，因为我们不知道如何描述结构。反观BERT的成功，再怎么成功，其数学基础也是建立在统计学之上的，至少我们知道联合概率分布是如何计算的。现在的问题是，我们既不知道结构如何描述，也不知道结构如何计算。</p>
+<font color="red">所以，mask是一种通过表象去计算自然语言结构的主要方式。mask虽然被称为掩码，但其主要的功能是【补全】，就好像英语考试中的完形填空，在补全句子信息的过程之中也学习到了句子的整体结构，做的多了，自然而然的也就形成了“语感”。这个语感，实际上就是脑子里对自然语言结构的建模。</font>
+
+<p>在之前的叙述中，我们所关注的都是单个句子的联合分布。秉承深度学习的哲学，我们可以用mask的方式对多个句子重拳出击，甚至说如果你开心(有显卡)，你也可以同时对多篇文章一起重拳出击。</p>
+<p>具体做法就是把多个句子当成一个句子，每一个句子的句尾加入一个特殊的标记，比如$[cut]$，然后多个句子顺序拼接，直接输入神经网络进行计算。</p>
+<!-- # 更多的思考
+<font color=red>当然，我们也可以从互信息的角度去思考问题。</font>
+
+
+
+为了更加形象的讲解，我们可以想象如下的一个图形：
+
+![](文本生成/h.png) -->
+<h1 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h1><p>gan的主要问题是：</p>
+<ol>
+<li>训练困难，有可能因为梯度爆炸而导致模式崩塌。（这个训练困难的问题我不确定还是否存在，因为看到的论文是在18年发表的，而18年的时候又提出了f-gan，其中的共轭算法已经基本避免了这个问题）</li>
+<li>多样性不足：具体表现为GAN文本生成模型总是会生成一些短小的句子，从而可以获得更高的分数。（但这个问题我感觉也已经基本解决了，那就是依靠mask方法做长文本输入。）</li>
+</ol>
+<h1 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h1><p>强化学习目前给我的感觉仍旧是牛刀杀鸡。我们来简单的讨论一下强化学习中的两个概念：收益和动作空间。（这两个问题也许是强化学习在自然语言处理方面效果不显著的主要原因）</p>
+<p>首先，收益相当于深度学习中的损失函数，因为在数学上，前者是求最大值，后者是求最小值，没有本质上的区别。对我来说，也许不同的概念会帮助人们产生不同的理解，但这种名称上的改变并没有给算法带来本质上的不同：因此我就可以在损失函数前面加上一个符号，然后将这个负损失定义为收益。</p>
+<p>其次，动作空间。这个东西就有点像几十年前人们精心设计的特征一样。如果是对于一些简单问题，那当然是非常有效；但对于自然语言这种极其复杂的问题来说，动作空间就显得有点“狭小且破碎”，因为人工定义的动作空间目前还不能完全描述自然语言。反向思考，如果动作空间能够几乎完整的描述自然语言的特性，那我为什么不去手工写正则表达式呢？</p>
+<h1 id="文本生成的关键在于MASK"><a href="#文本生成的关键在于MASK" class="headerlink" title="文本生成的关键在于MASK"></a>文本生成的关键在于MASK</h1><h2 id="用mask来取代动作空间"><a href="#用mask来取代动作空间" class="headerlink" title="用mask来取代动作空间"></a>用mask来取代动作空间</h2><h1 id="着手建模"><a href="#着手建模" class="headerlink" title="着手建模"></a>着手建模</h1><p>依旧是基于公式：</p>
+<script type="math/tex; mode=display">p(x_0) = p(x_0|x_1,x_2,x_3,...,x_n)</script><p>个人认为，这个是最好的文本建模方法了，公式中既包含了结构信息（贝叶斯全概率公式）又能够体现语义信息（条件概率），是非常好的生成模型。</p>
+<p>但是好东西也是不容易获得的，条件概率的计算量可以达到无穷，力大砖飞的BERT系列甚至就可以看做一个非常强悍的条件概率计算模型。如何降低条件概率的计算复杂度问题仍旧是一个非常值得研究的问题。</p>
+<p>好了，言归正传。首先给定一个$sentence$作为输入</p>
+<script type="math/tex; mode=display">P(sentence) = p(x_0)p(x_1|x_0)p(x_2|x_0,x_1)\cdots p(x_n|x_0,x_1,\cdots,x_{n-1})</script><h1 id="文献时间"><a href="#文献时间" class="headerlink" title="文献时间"></a>文献时间</h1><h2 id="第一篇"><a href="#第一篇" class="headerlink" title="第一篇"></a>第一篇</h2><p><a href>An Auto-Encoder Matching Model for Learning Utterance-Level<br>Semantic Dependency in Dialogue Generation</a></p>
+<p><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/2.png" alt="原文loss"></p>
+<p>编码器和解码器都是LSTM，作者希望在隐变量空间中将上文信息与下文信息对齐，如大图中的中间那一层所示。</p>
+<p><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/1.png" alt="原文loss"></p>
+<p>对齐的方式是L2范数。其实改成别的散度也是可以的。</p>
+<p><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/3.png" alt="原文loss"></p>
+<p>生成效果如图所示。</p>
+<h2 id="第二篇"><a href="#第二篇" class="headerlink" title="第二篇"></a>第二篇</h2><p><a href>CommonGen: A Constrained Text Generation Challenge for Generative Commonsense Reasoning</a></p>
+<p><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/4.jpg" alt="模型任务"></p>
+<p>这篇文章在文本生成的任务中引入了人类的常识。</p>
+<font color="red">其作用相当于引入了知识图谱</font>，这就相当于在求联合分布的时候给定了一些标签，标签相当于条件，在某种程度上相当于求解条件分布。<font color="blue">虽然文章的任务是做图片描述，但有一些地方还是值得我们参考的。</font>
+给定的输入为若干个单词，目标是生成一句通顺的人话。
+
+作者认为完成这个任务的条件主要有两个：
+1. 词与词之间的关系
+2. 合理的语法
+
+作者首先构造了一个“概念的集合”，这个集合中的概念都是一些基本的名词和动词：
+$$\{c_1,c_2,...\} \in \mathcal{X}$$
+
+以及一个句子集合$\mathcal{Y}$，里面装的都是人话。模型的目的就是去学习$\mathcal{X} \rightarrow \mathcal{Y}$的映射。
+
+那么这个映射应该怎么去学习呢？
+
+***<font color="red">对比学习 </font>***
+
+首先我们构造训练集$\mathcal{T}$，$\mathcal{T}$是$\mathcal{Y}$的一个子集，但是我们需要给$\mathcal{T}$加上一个限制条件:<font color="red">所有的$\mathcal{T}$ 都必须包含$\mathcal{X}$中的若干个元素</font>
+
+<p>举例来说（本节第一张图片所示），训练集可以长成这个样子：<br>x1 : {苹果，袋子，放}<br>t1 ：{一个女孩儿把苹果放在她的袋子里}<br>x2 ：{苹果，树，摘}<br>t2 ：{一个男人从树上摘了一些苹果}<br>x3 : {苹果，篮子，洗}<br>t3 ：{一个男孩从篮子里拿了几个苹果去洗}</p>
+<p>好了，现在我们有了三个训练样本。里面包含了实体，以及隐藏在句子中的实体关系。在训练阶段，假设输入的概念集合为:{梨，袋子，放}，【梨】这个词在训练集中从来没有出现过，那么就可以认为<font color="red">【鸭梨】=【苹果】，在{袋子，放}的条件下</font></p>
+<!-- 当然了，上述方法有点类似于对比学习，但我个人认为对比学习的本质不是找相同，而是找不同。
+
+反正体现在哪里？个人认为，反正体现在训练集当中。新的实体，比如【鸭梨】，从来没有在训练集中出现过。现在要证明【鸭梨】是一个实体，那么反证法就是【鸭梨】不是一个实体。
+
+但是与【鸭梨】相关的单词是在训练集中出现过的，那这时候如果想证明 -->
+<h2 id="第三篇"><a href="#第三篇" class="headerlink" title="第三篇"></a>第三篇</h2><p><a href>Adversarial Ranking for Language Generation</a><br><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/5.png" alt><br>图中,G是生成器生成的文本，H是人话。RANKER是一个打分器，给所有的输入样本打分，本质上是一个discriminator.打分方法本质上还是对比学习的方法，请参考第二篇。</p>
+<p>具体的做法是，针对相同的$x \in \mathcal{X}$,挑选出一些包含x的人话H，然后用这些x生成样本G，将${H,G}$输入到打分器中排序，并根据排序来设计loss.<br><!-- 这片文章是利用NLP中的负采样方法来训练GAN。针对GAN的训练困难问题，负采样确实是一种好方法。虽然文中将这种方法称为Rankings
+ --></p>
+<h2 id="第四篇"><a href="#第四篇" class="headerlink" title="第四篇"></a>第四篇</h2><p><a href>Generating Text through Adversarial Training using Skip-Thought Vectors</a><br>文本是离散的，所以不适合用GAN来训练。虽然我们可以用嵌入的方式得到词向量，但在输出端还是需要把词向量转化成离散的字，这样才能得到一句文本。就比如我们假设”你好”=1.0,但是”1.01”是什么，谁也不知道。</p>
+<p>所以本文作者打算用稠密的句向量来做。所谓的稠密就是连续，与离散相对的概念。<br>在介绍这篇文章之前，我们要先看看什么是Skip-Thought。<br><a href="https://zhuanlan.zhihu.com/p/100271181" target="_blank" rel="noopener">一种传统的句表示学习方法——Skip-Thought Vectors</a></p>
+<p><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/6.jpg" alt><br>然后，原文作者将文本转化为稠密的句向量输入到GAN中做训练，输出的稠密向量用Skip-Thought 的解码器解码一下就是句子了。</p>
+<p><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/7.jpg" alt></p>
+<h2 id="第五篇"><a href="#第五篇" class="headerlink" title="第五篇"></a>第五篇</h2><p><a href>Learning Neural Templates for Text Generation</a></p>
+<p>这篇文章虽然是说用神经网络学习模板，但实际上已经是在践行强化学习了。如果将模板想象成动作空间，那就容易理解一些了。</p>
+<h2 id="第六篇"><a href="#第六篇" class="headerlink" title="第六篇"></a>第六篇</h2><p><a href>Long Text Generation via Adversarial Training with Leaked Information</a></p>
+<p>文章作者认为，训练GAN的时候，目标文本序列作为控制信号是处于最后一个阶段的，而生成器所生成的隐变量序列中是包含结构信息和语义信息的，而控制信号作为离散的序列只是在最后阶段与隐变量交互信息。什么意思，就是说稠密的隐变量只有在argmax运算之后才能与文本计算距离，而argmax却大量的损耗了隐变量所蕴含的信息。<br>那么作者做了一件什么什么事情呢？那就是把控制序列的最后一个信号，也就是文本的最后一个字作为额外的输入信息，以及判别器的编码，输入生成器中，。<br>一般的GAN，生成器和判别器之间只有在BP阶段才有信息交互。</p>
+<p>模型整体结构如下图所示。<br><img src="/2020/12/23/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/论文/8.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/29/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%AD%A6%E4%B9%A0/" rel="prev" title="生成模型学习">
+      <i class="fa fa-chevron-left"></i> 生成模型学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/10/GNN%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="GNN学习笔记">
+      GNN学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODg4Mi8yNTM3Ng=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写在最前面的逻辑导图"><span class="nav-number">1.</span> <span class="nav-text">写在最前面的逻辑导图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主线剧情"><span class="nav-number">1.1.</span> <span class="nav-text">主线剧情</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是文本生成？"><span class="nav-number">2.</span> <span class="nav-text">什么是文本生成？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文本生成的局限性"><span class="nav-number">2.1.</span> <span class="nav-text">文本生成的局限性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#经典的Seq2Seq"><span class="nav-number">3.</span> <span class="nav-text">经典的Seq2Seq</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#seq2seq的结构"><span class="nav-number">3.2.</span> <span class="nav-text">seq2seq的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我们到底在干什么？"><span class="nav-number">3.3.</span> <span class="nav-text">我们到底在干什么？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意力机制"><span class="nav-number">4.</span> <span class="nav-text">注意力机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mask方法：建造跨海大桥"><span class="nav-number">4.1.</span> <span class="nav-text">mask方法：建造跨海大桥</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GAN"><span class="nav-number">5.</span> <span class="nav-text">GAN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#强化学习"><span class="nav-number">6.</span> <span class="nav-text">强化学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文本生成的关键在于MASK"><span class="nav-number">7.</span> <span class="nav-text">文本生成的关键在于MASK</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#用mask来取代动作空间"><span class="nav-number">7.1.</span> <span class="nav-text">用mask来取代动作空间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#着手建模"><span class="nav-number">8.</span> <span class="nav-text">着手建模</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文献时间"><span class="nav-number">9.</span> <span class="nav-text">文献时间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一篇"><span class="nav-number">9.1.</span> <span class="nav-text">第一篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二篇"><span class="nav-number">9.2.</span> <span class="nav-text">第二篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三篇"><span class="nav-number">9.3.</span> <span class="nav-text">第三篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四篇"><span class="nav-number">9.4.</span> <span class="nav-text">第四篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五篇"><span class="nav-number">9.5.</span> <span class="nav-text">第五篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第六篇"><span class="nav-number">9.6.</span> <span class="nav-text">第六篇</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">李忠宇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李忠宇</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

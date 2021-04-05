@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Lectrue 1Structure and ClarityKnow your readers who want to know the result of the paper to determine to read on - Abstract know the intuitively the key idea behind this paper,how it is derived,what a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文写作">
+<meta property="og:url" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/index.html">
+<meta property="og:site_name" content="AIfuns">
+<meta property="og:description" content="Lectrue 1Structure and ClarityKnow your readers who want to know the result of the paper to determine to read on - Abstract know the intuitively the key idea behind this paper,how it is derived,what a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/7.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/8.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/9.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/10.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/11.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/12.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/13.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/14.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/15.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/16.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/17.jpg">
+<meta property="article:published_time" content="2020-06-29T12:08:06.000Z">
+<meta property="article:modified_time" content="2020-09-03T04:47:11.438Z">
+<meta property="article:author" content="李忠宇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/1.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>论文写作 | AIfuns</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">AIfuns</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">为中华之富强而读书</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李忠宇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AIfuns">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文写作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-29 20:08:06" itemprop="dateCreated datePublished" datetime="2020-06-29T20:08:06+08:00">2020-06-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-03 12:47:11" itemprop="dateModified" datetime="2020-09-03T12:47:11+08:00">2020-09-03</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Lectrue-1"><a href="#Lectrue-1" class="headerlink" title="Lectrue 1"></a>Lectrue 1</h1><h1 id="Structure-and-Clarity"><a href="#Structure-and-Clarity" class="headerlink" title="Structure and Clarity"></a>Structure and Clarity</h1><h2 id="Know-your-readers-who-want-to"><a href="#Know-your-readers-who-want-to" class="headerlink" title="Know your readers who want to"></a>Know your readers who want to</h2><ul>
+<li>know the result of the paper to determine to read on - <font color="purpo">Abstract</font></li>
+<li>know the intuitively the key idea behind this paper,how it is derived,what are the significance and implications - <font color="purpo">Introduction</font></li>
+<li>know all the gory details <font color="purpo">whole paper</font></li>
+</ul>
+<h2 id="Difference-between-writing-papers-in-English-and-Chinese"><a href="#Difference-between-writing-papers-in-English-and-Chinese" class="headerlink" title="Difference between writing papers in English and Chinese"></a>Difference between writing papers in English and Chinese</h2><h3 id="Cultural"><a href="#Cultural" class="headerlink" title="Cultural"></a>Cultural</h3><ul>
+<li>Confidence versus modesty:中国认为谦逊是好的表达方式，而外国人则认为证据才是最有力的。</li>
+<li>“Responsibility” of delivery(how much the reader can understand you). 中国人认为，背景知识应该是读者所预先掌握的；而外国人则相反。</li>
+<li>Language:<font color="red">Direct translations often do not work</font>,so,can i write paper in Chinese and then translate it into English?Theacher do not recommond you to do so,cause that is not a good practice.Ofent come to a bad translation.</li>
+</ul>
+<p>No personal expression in your paper! </p>
+<h1 id="Lectrue-2"><a href="#Lectrue-2" class="headerlink" title="Lectrue 2"></a>Lectrue 2</h1><h1 id="Main-Contents-of-a-Scientific-Paper"><a href="#Main-Contents-of-a-Scientific-Paper" class="headerlink" title="Main Contents of a Scientific Paper"></a>Main Contents of a Scientific Paper</h1><p>first of all , title. </p>
+<h2 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h2><ul>
+<li>Best representation of the paper : contributions and unique features.</li>
+<li>Generally not a sentence </li>
+<li>Importance of right word order</li>
+<li>No waste of words</li>
+</ul>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><ul>
+<li>Summary in a few hundred words</li>
+<li>Very important to attract readers</li>
+</ul>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><ul>
+<li>Motivations and problem descriptions:what is motivation to write the paper and what is the main problem we discussing</li>
+<li>Academic and/or industrial impact</li>
+<li>Literature reviews <ul>
+<li>Show the SOTA</li>
+<li>Cite references available to general public</li>
+<li>Avoid offensive remarks</li>
+<li>Use the most recent results </li>
+<li>Orgnization of the paper (optional)</li>
+</ul>
+</li>
+</ul>
+<!-- and then,we need to review the exsisting work , what are the methodology,what are the result..we need to show the SOTA... -->
+<h2 id="Problem-Descriptions-of-Formulation"><a href="#Problem-Descriptions-of-Formulation" class="headerlink" title="Problem Descriptions of Formulation"></a>Problem Descriptions of Formulation</h2><ul>
+<li>System configuration , environment,etc</li>
+<li>Definitions of all notation for variables,symbols,etc.</li>
+<li>Mathematical models and formulations.</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><ul>
+<li>Main ideas to solve the problem</li>
+<li>Theorems and proofs</li>
+<li>Descriptions of the approach or algorithm</li>
+</ul>
+<h2 id="Results-of-applications-experiment-or-testing"><a href="#Results-of-applications-experiment-or-testing" class="headerlink" title="Results of applications , experiment or testing"></a>Results of applications , experiment or testing</h2><ul>
+<li>Description of the practical or experiment system</li>
+<li>Description of the data and the associated system</li>
+<li>Descriptions of the computer system</li>
+<li>Presentation of the results:tables,figures,etc.</li>
+<li>Applications and benefits</li>
+</ul>
+<h2 id="Conclution"><a href="#Conclution" class="headerlink" title="Conclution"></a>Conclution</h2><p>conclution is not the repeat of the abstract.</p>
+<ul>
+<li>Summary of your findings (not a repeat of abstract)</li>
+<li>Concluding remarks</li>
+</ul>
+<h2 id="Acknowledgment"><a href="#Acknowledgment" class="headerlink" title="Acknowledgment"></a>Acknowledgment</h2><ul>
+<li>Acknowledge the funding agencies</li>
+<li>Thank individuals</li>
+</ul>
+<h2 id="References-Very-important"><a href="#References-Very-important" class="headerlink" title="References(Very important!!!)"></a>References(Very important!!!)</h2><ul>
+<li>List references in approproate fromat</li>
+<li>Have recent references if possible</li>
+<li>Give complete information</li>
+<li>List appropriate numbers of references</li>
+<li>Do not list anything that is not refereed to</li>
+<li>Do not list too many home made references</li>
+</ul>
+<p>List references in appropriate format and try to meet the requirements of the journal</p>
+<p>format must be consistently</p>
+<h1 id="论文的三段式结构"><a href="#论文的三段式结构" class="headerlink" title="论文的三段式结构"></a>论文的三段式结构</h1><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/1.jpg" alt></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>老师将论文大致分为三个部分。通常来说，引言段和结论段应该以议论文的形式来进行书写，而中间段可以以写说明文的方式进行书写。所以引言段和结论段通常来说需要较强的逻辑性，而中间段则需要写清晰的实验过程。</p>
+<ul>
+<li>引言段<br>需要得出的结论是，这篇文章的研究目标是合理的，论据应该是从各种文献中收集来的相关资料。<ul>
+<li><font color="blue">从论述结构的角度来看</font>，引言段是从一般到特殊（倒三角），从一个较为普遍，大家都比较接受的问题或者观念入手，逐步引导读者，逐步深入，最终说服读者接受一个特定的研究目标。</li>
+</ul>
+</li>
+<li>中间段<br>Objective , method , result</li>
+<li>结论段<br>目的是为了说明这篇文章是有价值的，所使用的论据<font color="red">主要</font>是自己的（即中间段）的研究结果，同时也包括一些从文献中搜集来的相关资料。<ul>
+<li><font color="blue">从论述结构的角度来看</font>，结论段是从特定到普遍（正三角），从一个特定的研究结果开始，引导读者接受这个结果所带来的普遍的意义。</li>
+</ul>
+</li>
+</ul>
+<p>写论文越早越好，最好早于做实验和采集数据，因为写作引言段是不需要有任何实验数据的。而且，一个与Introduction相对应的单词叫做outroduction，是conclution的同义词。这就好像，如果把读者比作猎物，那么Introduction就像是洞口，是吸引猎物上钩的诱饵；那么中间段就是洞内，吸引猎物继续前进，看一看；最后，结论段将猎物带出洞。</p>
+<h2 id="引言段"><a href="#引言段" class="headerlink" title="引言段"></a>引言段</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/2.jpg" alt><br>引言应落脚于研究目标，所以在引言结尾一边都连接着对应研究目标的完整描述。在本模板中，将引言和研究目标作为一个整体来考虑，可以更好的分析他们之间的逻辑关系。在这个模板中，可以分为相互对应的两大段：</p>
+<ul>
+<li>在第一段，确定一个研究机会。从一个大问题开始，到提出一个研究空白、研究问题结束。</li>
+<li>在第二段，提出一个解决方案，并占领这个研究机会。即：清晰的描述研究目标，填补在第一段中的研究空白</li>
+</ul>
+<h2 id="中间段"><a href="#中间段" class="headerlink" title="中间段"></a>中间段</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/3.jpg" alt><br>如何确立一个好的研究课题以及怎样才算是一个好的研究课题：</p>
+<ol>
+<li>填补研究空白：<br>致力于发现现有文献中的研究空白或者漏洞，而我们提出一个课题去弥补这个漏洞。一般来说，空白都是领域内的老问题，虽然被普遍认可，但是填补的难度很高，具有挑战性。因此，主要强调课题中的创新部分，它可能是一个新的解决方案或者是从其他领域中借鉴过来的新的想法。同时，还因为它是一个老问题，还需要了解前人都做过怎样的尝试，我们需要论述，我们的研究与前人的研究有着怎样的不同。或者我们的研究怎样才能与前人的研究成果相依托相配合。</li>
+<li>延伸现有研究：<br>在这个方法中，我们追踪某一领域的研究历史，一项接一项的成就，每一项都承接着上一项的历史，建立在上一项的基础之上，同时又为下一项研究奠定了基础。延伸现有研究往往会有新的问题，甚至是新的领域。新的问题往往蕴含着新的机会，但意义往往并不十分明确，对于没有经验的研究者来说，容易迷失。所以，要始终牢记长期目标，要时常问自己，这一项工作的意义和必要性，我们选择的这一项研究课题对于我们的长期目标和受众读者来说有什么实际的意义和贡献？</li>
+<li>复制成功的研究：<br>将一项成功的研究在不同的情况下进行复制。</li>
+</ol>
+<p>为了确定一个好的课题，上述三种方式可以单独使用也可以组合使用。那么，怎样才算是一个好的课题呢？这里也有三条准则：</p>
+<ul>
+<li>具体可行：所有的术语和变量都应该有明确的定义。整个课题具有明确的边界。不应该存在任何先入为主的假设。</li>
+<li>开放的和可争议的：可证伪性是区分科学与非科学的标准。如果课题是不可证伪的，那么就是不可取的。</li>
+<li>一个好的课题应该能够激发创新：技术的发展为创新制造机会，而技术的发展可能来自本领域，但更多的却是来自其他不同的领域。<font color="red">跨领域甚至是跨学科的思考往往是创新的来源。</font></li>
+</ul>
+<p>最后，有两种研究课题是最牛的：</p>
+<ol>
+<li>研究者填补了当前领域内的所有漏洞，完善了目前的知识框架，在他的工作之后，没有人能够做进一步的改进了。</li>
+<li>研究者突破了目前的知识框架，为更多的机会打开了大门，在他的工作之后，有很多研究者跟随着他的脚步进行着研究。</li>
+</ol>
+<h2 id="确立具体的研究目标"><a href="#确立具体的研究目标" class="headerlink" title="确立具体的研究目标"></a>确立具体的研究目标</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/4.jpg" alt><br>大处着眼，小处着手。将长期目标和短期目标结合起来。</p>
+<ul>
+<li>大处着眼：不管我们目前自身的能力或者是自身的资源是多么的有限，我们都希望能够尽可能的参与到一些有意义的大事业中，从而使我们的工作更有意义。如果我们局限于自身的实力，而只甘心做一些细枝末节的项目，那么我们的工作很难有大的影响，也很难对我们的工作保持长久的热情。更重要的是，我们丧失的是成长的空间。</li>
+<li>小处着手：不管我们的理想有多么的宏伟，我们每一次的进步，都应该根据自身现有的条件，踏踏实实的从小事做起。</li>
+</ul>
+<p>因此，要将手头需要做的小事和心中所要做的大事联系起来。如果我们只关注眼前的小事而没有心中的大事，那么我们的项目可能就会由于苟且而没有意义。相反，如果我们只关注心中的大事，而不去做手头的小事，那么我们的项目可能就会限于大而空。</p>
+<p>如果把我们的长远目标比作一个宏伟的建筑，那么我们的当前目标可能只是一个小小的砖块。在实际中，我们的长远目标可能是和许多别的研究者所共享的，大家的贡献合在一起就能够完成一个伟大的事业。</p>
+<h2 id="文献综述的两个基本点"><a href="#文献综述的两个基本点" class="headerlink" title="文献综述的两个基本点"></a>文献综述的两个基本点</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/5.jpg" alt><br>学而不思则罔，思而不学则殆。</p>
+<ul>
+<li>有所学：在文献综述中，要展示与我们专业相关的所有的知识，有一个全面的了解。要尽可能的包括<font color="red">所有的，相关的，主要的</font>文献。如果在我们的文献综述中遗漏了一个与文章目标相关的文献，那么在审稿人的眼中，我们的论文就是不专业的。</li>
+</ul>
+<h2 id="阅读文献的两个阶段"><a href="#阅读文献的两个阶段" class="headerlink" title="阅读文献的两个阶段"></a>阅读文献的两个阶段</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/6.jpg" alt><br><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/7.jpg" alt></p>
+<p>好记性不如烂笔头。</p>
+<p>将论文中的内容抽象出来。</p>
+<h2 id="用故事的逻辑写文献综述"><a href="#用故事的逻辑写文献综述" class="headerlink" title="用故事的逻辑写文献综述"></a>用故事的逻辑写文献综述</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/8.jpg" alt><br>一个好的故事应该是有起伏的，有起伏才能建立起一个吸引人的故事。故事的起伏能够积累和释放听众的情绪，从而产生强大的影响力。那么我们怎样才能说好一个有起伏的故事呢？图中的木板包括四个要素：</p>
+<ol>
+<li>情境（陈述背景）</li>
+<li>冲突（矛盾的表象）</li>
+<li>关键问题（矛盾的本质）</li>
+<li>解决方案（如何解决矛盾）</li>
+</ol>
+<p>其中：</p>
+<ul>
+<li>SCQA是一个讲故事最自然的顺序。而在实际的写作情况中，这个顺序是可以有所调整的。</li>
+<li>有的时候，关键问题和解决方案比较易于为读者所接受，那么，就可以采用比较省时间的开门见山的方式，也就是<font color="red">QASC</font>或者<font color="red">QACS</font>。首先提出关键问题和解决方案，直接点明本文的解决问题和研究目标，随后再慢慢介绍情景和冲突。</li>
+<li>如果你希望你的文章能够有冲击力，也可以采用<font color="red">CSQA</font>的顺序，首先提出冲突，引发读者的关注，随后再介绍情境和后续的解决方案。</li>
+</ul>
+<h2 id="文献分析的三种逻辑推理方法"><a href="#文献分析的三种逻辑推理方法" class="headerlink" title="文献分析的三种逻辑推理方法"></a>文献分析的三种逻辑推理方法</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/9.jpg" alt></p>
+<ul>
+<li>归纳法：通过对各种不同的资料进行归纳总结，从而由个别的证据推断出一般性的规律。简单的说，就是实现由点到线的推理。归纳推理有两种方法：<ul>
+<li>求同：找出各种不同文献之间的<font color="red">共同点</font>，从而找出普遍性的规律</li>
+<li>求异：通过比较各种不同文献资料之间的<font color="red">不同点</font>，从而找到造成这种不同的关键因子，或者是变量的趋势、走向。</li>
+</ul>
+</li>
+<li>演绎法：把文献中已经总结出的某种一般性的规律，和我们当前所面临的实际情况相结合进行演绎分析，由一般到个别，简单的说，就是实现由线到点的推理。我们所熟悉的由大前提、小前提来得出结论的三段论的结构就属于一种演绎推理。</li>
+<li>溯因推理：从一堆看似杂乱无章的事实中获得洞见的一个过程。类似于侦探破案，从已知的所有线索中排除各种可能性，从而最终推断出真相。</li>
+</ul>
+<h2 id="如何从文献出发来推出自己的论点"><a href="#如何从文献出发来推出自己的论点" class="headerlink" title="如何从文献出发来推出自己的论点"></a>如何从文献出发来推出自己的论点</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/10.jpg" alt></p>
+<h2 id="用结构化思维构思文章"><a href="#用结构化思维构思文章" class="headerlink" title="用结构化思维构思文章"></a>用结构化思维构思文章</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/11.jpg" alt><br>一般来说，一个逻辑清晰、内容详实的文章，应该至少包括一个图中所示的三层次的金字塔结构。金字塔的塔尖就是文章的终极结论，金字塔的中间，则是文章的一级小标题；金字塔的第三层可以是逐个支持上一级小标题的各个段落，比如，在引言的小标题下，我们要论证我们的研究目标是合理的；在方法的小标题下，我们要展示我们的研究方法是靠谱的；在结果和讨论的小标题下，我们要论证，我们的研究结果的意义。当然，我们也可以决定是否需要加入二级小标题，从而构成金字塔更多的层次。在这样一个金字塔结构中，文章中的每一个段落，每一个小标题都不是孤立的存在，而是彼此连接，各有功能的。它们一方面要支撑上一级的观点，另一方面，又受到下一级观点和数据的支撑。一片文章如果具有了这样一套路径清晰的金字塔结构，则会为读者节省大量的阅读时间，读者会读的很爽快。</p>
+<p>学术论文的写作往往要求既要简练，又要详实。这看似矛盾，其实不然。要求简练的是文字，要求详实的是内容和层次。我们希望文章中的每一个观点都有来自不同方向的支撑，所以，分类要详尽，层次要丰富、深入。尤其是在金字塔的最下面一层，一定要有落到实处的信息化语言，比如说数据或者具体的文献支撑。我们应当追求以最少的文字来表达出最多的意思。就好比，对文章的骨架，要追求详实丰富，而对文章的血肉要追求简练、瘦身。在构建这样一个金字塔的过程中，有两种结构化的思维方法非常有用。</p>
+<ol>
+<li>由上向下的MECE分类法则：Mutually Exclusive Collectively Exhaustive(相互独立，完全穷尽)，也就是分类的各个要素之间不重合不遗漏。</li>
+<li>从下向上总结可以用最小容器法则：很多时候我们拥有了大量的具体资料和信息，需要做从下向上的总结，</li>
+</ol>
+<h2 id="如何分解和精选研究目标"><a href="#如何分解和精选研究目标" class="headerlink" title="如何分解和精选研究目标"></a>如何分解和精选研究目标</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/12.jpg" alt><br>在之前说过，要从大处着眼，从小处着手，这就需要将复杂问题简单化，因为万事万物，往往都只有一个主要的矛盾。</p>
+<p>有洞察力的人，能够看清这个矛盾；有创造力的人，可以将这个矛盾转化为别的更为容易解决的矛盾。为了促成这种核心矛盾的转化，我们应该首先对矛盾的各个方面或者是各个核心要素分别用结构化思维向下分解为不同的要素，分解的时候可以用到MECE法则，矛盾的每一个要素都可以向下分解为一个多层的小金字塔，这样分解之后，我们就有可能发现新的核心要素，而原先在A和B之间的矛盾就有可能转为新的核心要素之间的矛盾，比如图中A1和B1之间的矛盾。</p>
+<p>举例：<br>如何将2L的水放入1L的杯子中。这个问题的核心要素有三个：杯子，水，重力。首先将问题分解为这三个结构化的要素，再对每个要素进行深入分解，就能够找出解决问题的方案。比如，首先从杯子方面来分析：</p>
+<ul>
+<li>主要应该解决杯子的容积问题。可以考虑做一个有弹性的杯子，随着水倒进去，杯子会变得越来越大。这样，我们的原始问题就转化为了如何做一个有弹性的杯子。</li>
+</ul>
+<p>从水的方面来分析：</p>
+<ul>
+<li>主要应该解决水的流动性问题。可以考虑将水冻成冰柱。这样，我们的原始问题就转化为了水要冻成怎样的形状才能装进杯子。</li>
+</ul>
+<p>从重力方面分析：</p>
+<ul>
+<li>主要应该解决如何消除重力的问题。可以把水和杯子放到太空中，水失去了重力就会变成球，即使放到1L的杯子里也不会漫出来。</li>
+</ul>
+<p>这就是一个清晰完整的，用结构化思维分析问题的过程。我们把问题分解为三个结构化要素，再逐个对每个要素进行分析，得出各种不同的解决方案或者是简化方案，最后再选择最适合我们的方案。</p>
+<p>分解问题是第一步，它是对问题的各个核心要素的定义化的过程。在此之后，我们还需要对某些问题的关键要素进行量化。并对关键问题进行公式化的处理。从而，我们就有可能将一个笼统的问题转化为一个具体的，几个变量之间的关系问题。最后，我们可以对关键变量进行假设，来进一步细分问题。我们还可以根据假设来收集数据，再验证这些假设，并不断地更新假设。这样我们就可能找到最有可能解决问题的最有意义的研究目标，来投入我们有限的时间和资源。大多数问题都源于我们没有准确的定义这些问题。运用结构化的思维，我们不仅可以精细化的定义问题，把一个大问题转化为诸多的小问题，或者把一个问题的内在矛盾转化为别的矛盾，从而精选出有创新性的研究目标。</p>
+<h2 id="通过文献检索细化研究目标"><a href="#通过文献检索细化研究目标" class="headerlink" title="通过文献检索细化研究目标"></a>通过文献检索细化研究目标</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/13.jpg" alt><br>当我们有了一个研究目标的初稿时，首先要做的就是把它概念化。也就是提炼出这个研究目标所有的关键概念。随后要对这些关键概念的内涵和外延做基本的了解。需要带着问题阅读。每一个关键概念都有可能有不同的表达方法，或者近似的表达。所以需要尽可能多而全的搜索这些文献。</p>
+<h2 id="定义和描述研究目标"><a href="#定义和描述研究目标" class="headerlink" title="定义和描述研究目标"></a>定义和描述研究目标</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/14.jpg" alt><br>首先，要有明确的方向和边界。其中，图中的Objective一般是自己独具慧眼所发现的，而对于大多数读者来说并不明显。</p>
+<ul>
+<li>这时候就要指明方向，指出它和我们长远目标之间的关系；</li>
+<li>第二是帮助读者了解我们研究目标的意义。这时候就需要两句话来描述定义的具体目标；另一句话用于指明该具体目标对于我们长远目标的贡献。</li>
+</ul>
+<p>也就是说，我们要明确的指出，本次的工作包含哪些内容，不包含哪些内容。在划定辩解的时候，头脑中要对边界的研究内容和可能结论都要有相应的考虑。</p>
+<ul>
+<li>第一，我们需要考虑边界中的研究内容是否能在有限的时间内完成；</li>
+<li>第二，这个边界中的研究目标如果达成了，我们是否可以据此得出有意义的结论。</li>
+</ul>
+<p>因此，一个好的研究目标应该是有边界的，而且这个研究目标的完成度应该是可以测量的。也就是说，读者应该可以根据研究结果来判断研究目标是否达成。所以，在选择研究目标的时候，应该尽量选择一些具有完成意味的动词。</p>
+<p>在描述研究目标时，最常见的问题就是目标过于宽泛，这包括边界过大，或者边界不清。边界过大，则目标不可信；边界不清，则会传达出一种无能或者不自信的感觉。</p>
+<h2 id="用批判性思维检阅文献"><a href="#用批判性思维检阅文献" class="headerlink" title="用批判性思维检阅文献"></a>用批判性思维检阅文献</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/15.jpg" alt></p>
+<p>文献检阅可以分为两步：客观评价和主观选择。</p>
+<ul>
+<li>客观评价就是首先用一个客观的标准对所检阅的文献做一个客观的评断：它是否可信。Validity&amp;reliability。这个客观的标准就是事实和逻辑。首先，要区分文献中的信息是<font color="red">事实</font>还是<font color="red">观点</font>。如果是观点，那就不仅要看观点本身，还要看支撑观点的证据和逻辑。对于这些观点，还要判断作者是否有对其符合逻辑的论证。首先要识别这个论证方法是属于归纳还是演绎。这时候要注意，演绎推理得出的结论一般是<font color="red">必然性结论</font>，而归纳推理得出的结论只能是<font color="red">可能性的结论</font>。比如一个作者归纳：所有的天鹅都是白色的。那么这个作者是观察10只天鹅得出的结论还是观察100只天鹅得出的结论，这这两种情况下，该结论的可信度是不同的。因此，对于归纳得出的结论，还需要对证据的充分程度有所了解，以此来得出结论的可欣程度。<ul>
+<li>演绎推理：演绎推理得出结论的正确性主要源于其前提是否真实。由于在实际中，演绎推理很少会使出全部的前提，因此我们在评判演绎推理得出的观点时，一定要注意：<font color="red">补全作者所有的隐含假设。</font>问问自己，这些隐含假设我们是否同意。</li>
+</ul>
+</li>
+<li>主观选择：依据自身情况来判断文献信息是否可以<font color="red">为我所用</font>。也就是判断文献信息的Significance &amp; Relevance。</li>
+</ul>
+<p>批判性思维的核心不是为了消极的批评或者质疑，而是积极的选择，不是为了否定，而是为了建设。所谓的批判也绝不仅仅是为了批判别人，更重要的是批判和反思自己。</p>
+<h2 id="结果讨论和结论的写作要点"><a href="#结果讨论和结论的写作要点" class="headerlink" title="结果讨论和结论的写作要点"></a>结果讨论和结论的写作要点</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/16.jpg" alt></p>
+<p>结果部分的写作重在：简介，简练，平实。尽量使用简单的句型，易于理解。给出基于数据的客观事实和结果，而不要附加任何的个人观点。为了表达清楚，很多的研究结果需要分类别、分层次、分段来写。这时候一定要分类清晰，层次分明。</p>
+<p>在对结果进行分类分层时，一方面要突出关键数据、科学意义、代表性数据，另一方面要保持各类结果的适当均衡。另外就是要做到图中的两个一致。</p>
+<ul>
+<li>结果与方法保持一致。结果最好具有可复制性。文字内容应该与图标保持一致。在结果部分，我们一般只描述结果，而不做解释或者比较。对结果的解释或者比较一般放在讨论部分。解释是结果的延伸，是由结果+文献资料+个人观点而做出相关的推论。重在逻辑。有选择性的对部分关键结果进行深入分析得出有意义的推论。我们对结果的引用类似于对文献的引用。文献和文章中的结果都可以作为推理的论据。对于结果的讨论常常设计三种比较：<ul>
+<li>结果与预期目标的比较：根据我们的研究目标，我们要把我们的实际结果与我们预期的结果进行比较。如有不符，我们应该能尽量的给出解释。有时候还要根据实际研究结果指出本次研究的局限性。</li>
+<li>结果与相关文献的比较：通过比较，最好能够指出本次文章的创新点，优势或者特色。</li>
+<li>结果与长远目标的比较：通过比较，来说明我们本次的研究对于长远目标的实际贡献。指出本次研究的理论意义、实用价值、或者推广前景，等等。</li>
+</ul>
+</li>
+<li>论文的结论部分可视为对讨论部分的总结。一个好的结论要做到两点：<ul>
+<li>突出亮点：突出本次研究的创新点，这个创新点可以是来自结果的结论，也可以是来自我们的研究目标或者研究方法。</li>
+<li>指明方向：指出我们本次研究的局限性，和尚未解决的问题。从而对我们今后的研究方向做出建议或者设想。</li>
+</ul>
+</li>
+</ul>
+<p>好的结论，两点和方向缺一不可。</p>
+<h2 id="讨论和结论的逻辑架构"><a href="#讨论和结论的逻辑架构" class="headerlink" title="讨论和结论的逻辑架构"></a>讨论和结论的逻辑架构</h2><p><img src="/2020/06/29/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/17.jpg" alt></p>
+<h1 id="【中英双语】科技论文写作与投稿审稿经验分享（20200624直播完整回放）"><a href="#【中英双语】科技论文写作与投稿审稿经验分享（20200624直播完整回放）" class="headerlink" title="【中英双语】科技论文写作与投稿审稿经验分享（20200624直播完整回放）"></a>【中英双语】科技论文写作与投稿审稿经验分享（20200624直播完整回放）</h1><blockquote>
+<p>意译了一部分重点内容</p>
+</blockquote>
+<p>作为一个科学家，首先要认为自己是一个职业的作者，因为科学家之间的交流和工作主要是通过论文的形式。虽然科学家都很擅长也很愿意学习的知识，但问题是有的科学家却去刻意学习写作技术，这是不对的。</p>
+<p>为什么要写的好？</p>
+<ul>
+<li>能被发表</li>
+<li>能被引用</li>
+<li>能得到资金</li>
+<li>与其他领域的科学家进行交流</li>
+<li>增进沟通技巧</li>
+</ul>
+<p>虽然上述几点内容都是发表论文的好处，但有两点是特别能够说服人的。</p>
+<ol>
+<li>被引用：别人对你工作的认可</li>
+<li>与其他领域的科学家进行交流：能够出一些意想不到的成果</li>
+</ol>
+<h2 id="写作的两个角度"><a href="#写作的两个角度" class="headerlink" title="写作的两个角度"></a>写作的两个角度</h2><blockquote>
+<p>实际上我认为这就是批判性思维</p>
+<ol>
+<li>找到一个好的切入点<ol>
+<li>动机：为什么要做这个研究？</li>
+<li>公开的问题：这个特定的研究需要什么</li>
+<li>关键结果：新在哪里？</li>
+<li>影响：结果会带来哪些冲击？</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<p>要把论文中的所有东西都解释清楚，因为看你论文的不一定是同行。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/22/%E8%87%AA%E7%84%B6%E8%BE%A9%E8%AF%81%E6%B3%95/" rel="prev" title="自然辩证法">
+      <i class="fa fa-chevron-left"></i> 自然辩证法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/14/%E5%9F%BA%E7%A1%80%E6%8B%93%E6%89%91%E5%AD%A6/" rel="next" title="基础拓扑学">
+      基础拓扑学 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODg4Mi8yNTM3Ng=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lectrue-1"><span class="nav-number">1.</span> <span class="nav-text">Lectrue 1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Structure-and-Clarity"><span class="nav-number">2.</span> <span class="nav-text">Structure and Clarity</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Know-your-readers-who-want-to"><span class="nav-number">2.1.</span> <span class="nav-text">Know your readers who want to</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Difference-between-writing-papers-in-English-and-Chinese"><span class="nav-number">2.2.</span> <span class="nav-text">Difference between writing papers in English and Chinese</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cultural"><span class="nav-number">2.2.1.</span> <span class="nav-text">Cultural</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lectrue-2"><span class="nav-number">3.</span> <span class="nav-text">Lectrue 2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Main-Contents-of-a-Scientific-Paper"><span class="nav-number">4.</span> <span class="nav-text">Main Contents of a Scientific Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Title"><span class="nav-number">4.1.</span> <span class="nav-text">Title</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">4.2.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">4.3.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-Descriptions-of-Formulation"><span class="nav-number">4.4.</span> <span class="nav-text">Problem Descriptions of Formulation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">4.5.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results-of-applications-experiment-or-testing"><span class="nav-number">4.6.</span> <span class="nav-text">Results of applications , experiment or testing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclution"><span class="nav-number">4.7.</span> <span class="nav-text">Conclution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Acknowledgment"><span class="nav-number">4.8.</span> <span class="nav-text">Acknowledgment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References-Very-important"><span class="nav-number">4.9.</span> <span class="nav-text">References(Very important!!!)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文的三段式结构"><span class="nav-number">5.</span> <span class="nav-text">论文的三段式结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">5.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引言段"><span class="nav-number">5.2.</span> <span class="nav-text">引言段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中间段"><span class="nav-number">5.3.</span> <span class="nav-text">中间段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确立具体的研究目标"><span class="nav-number">5.4.</span> <span class="nav-text">确立具体的研究目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文献综述的两个基本点"><span class="nav-number">5.5.</span> <span class="nav-text">文献综述的两个基本点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阅读文献的两个阶段"><span class="nav-number">5.6.</span> <span class="nav-text">阅读文献的两个阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用故事的逻辑写文献综述"><span class="nav-number">5.7.</span> <span class="nav-text">用故事的逻辑写文献综述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文献分析的三种逻辑推理方法"><span class="nav-number">5.8.</span> <span class="nav-text">文献分析的三种逻辑推理方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何从文献出发来推出自己的论点"><span class="nav-number">5.9.</span> <span class="nav-text">如何从文献出发来推出自己的论点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用结构化思维构思文章"><span class="nav-number">5.10.</span> <span class="nav-text">用结构化思维构思文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何分解和精选研究目标"><span class="nav-number">5.11.</span> <span class="nav-text">如何分解和精选研究目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过文献检索细化研究目标"><span class="nav-number">5.12.</span> <span class="nav-text">通过文献检索细化研究目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义和描述研究目标"><span class="nav-number">5.13.</span> <span class="nav-text">定义和描述研究目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用批判性思维检阅文献"><span class="nav-number">5.14.</span> <span class="nav-text">用批判性思维检阅文献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果讨论和结论的写作要点"><span class="nav-number">5.15.</span> <span class="nav-text">结果讨论和结论的写作要点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#讨论和结论的逻辑架构"><span class="nav-number">5.16.</span> <span class="nav-text">讨论和结论的逻辑架构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#【中英双语】科技论文写作与投稿审稿经验分享（20200624直播完整回放）"><span class="nav-number">6.</span> <span class="nav-text">【中英双语】科技论文写作与投稿审稿经验分享（20200624直播完整回放）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#写作的两个角度"><span class="nav-number">6.1.</span> <span class="nav-text">写作的两个角度</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">李忠宇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李忠宇</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
