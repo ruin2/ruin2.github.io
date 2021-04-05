@@ -5,50 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/blog/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ruin2.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="动机为了研究NLG和NLU，我们必须要了解主流的预处理方法，以便更好的服务下游任务。 预处理语言模型：理论&amp;架构&amp;技巧2013年，word2vec横空出世。在那个深度学习还未出现，caffe尚未被开发的年代，这个最早的自然语言预处理模型给人工智能带来了一些惊喜，比如【国王-男人&#x3D;女王-女人】的词类比。当时的人们还不知道这项技术有何用处，受制于当时的硬件条件，在那个岁月静好，网络层很">
 <meta property="og:type" content="article">
 <meta property="og:title" content="预处理语言模型">
-<meta property="og:url" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:url" content="https://ruin2.github.io/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="AIfuns">
 <meta property="og:description" content="动机为了研究NLG和NLU，我们必须要了解主流的预处理方法，以便更好的服务下游任务。 预处理语言模型：理论&amp;架构&amp;技巧2013年，word2vec横空出世。在那个深度学习还未出现，caffe尚未被开发的年代，这个最早的自然语言预处理模型给人工智能带来了一些惊喜，比如【国王-男人&#x3D;女王-女人】的词类比。当时的人们还不知道这项技术有何用处，受制于当时的硬件条件，在那个岁月静好，网络层很">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/a.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/onehot.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/4.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/5.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/1.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/11.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/0.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/8.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/9.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/10.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/3.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/12.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/13.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/14.png">
-<meta property="og:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/15.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/a.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/onehot.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/4.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/5.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/1.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/11.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/0.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/8.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/9.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/10.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/3.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/12.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/13.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/14.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/15.jpg">
 <meta property="article:published_time" content="2021-03-11T03:29:55.000Z">
 <meta property="article:modified_time" content="2021-03-11T11:15:47.719Z">
 <meta property="article:author" content="李忠宇">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/a.jpg">
+<meta name="twitter:image" content="https://ruin2.github.io/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/a.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+<link rel="canonical" href="https://ruin2.github.io/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -110,7 +110,7 @@
 
   <div class="site-meta">
 
-    <a href="/" class="brand" rel="start">
+    <a href="/blog/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">AIfuns</h1>
       <span class="logo-line-after"><i></i></span>
@@ -132,27 +132,27 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -210,10 +210,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+    <link itemprop="mainEntityOfPage" href="https://ruin2.github.io/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
       <meta itemprop="name" content="李忠宇">
       <meta itemprop="description" content="">
     </span>
@@ -255,19 +255,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><p>为了研究NLG和NLU，我们必须要了解主流的预处理方法，以便更好的服务下游任务。<br><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/a.jpg" alt></p>
+        <h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><p>为了研究NLG和NLU，我们必须要了解主流的预处理方法，以便更好的服务下游任务。<br><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/a.jpg" alt></p>
 <h1 id="预处理语言模型：理论-amp-架构-amp-技巧"><a href="#预处理语言模型：理论-amp-架构-amp-技巧" class="headerlink" title="预处理语言模型：理论&amp;架构&amp;技巧"></a>预处理语言模型：理论&amp;架构&amp;技巧</h1><p>2013年，word2vec横空出世。在那个深度学习还未出现，caffe尚未被开发的年代，这个最早的自然语言预处理模型给人工智能带来了一些惊喜，比如【国王-男人=女王-女人】的词类比。当时的人们还不知道这项技术有何用处，受制于当时的硬件条件，在那个岁月静好，网络层很少的年代，word2vec如同种子一般深埋大地。直到14年后，预处理语言模型终于成长为参天大树，并在那个名为BERT的树干之上开花结果，令人眼花缭乱。</p>
-<h2 id="独热码"><a href="#独热码" class="headerlink" title="独热码"></a>独热码</h2><p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/onehot.png" alt="one hot"><br>缺点：矩阵太大，而且极为稀疏</p>
-<h2 id="共现矩阵"><a href="#共现矩阵" class="headerlink" title="共现矩阵"></a>共现矩阵</h2><p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/4.png" alt="共现矩阵"><br>缺点：矩阵太大，而且极为稀疏</p>
-<h2 id="【2003年】-NNLM-基于前馈神经网络的-N-元神经语言模型"><a href="#【2003年】-NNLM-基于前馈神经网络的-N-元神经语言模型" class="headerlink" title="【2003年】 NNLM:基于前馈神经网络的 N 元神经语言模型"></a>【2003年】 NNLM:基于前馈神经网络的 N 元神经语言模型</h2><p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/5.jpg" alt="共现矩阵"></p>
-<h2 id="【2013年】-word2vec"><a href="#【2013年】-word2vec" class="headerlink" title="【2013年】 word2vec"></a>【2013年】 word2vec</h2><p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/1.jpg" alt="word2vec架构"><br>作为被大家公认的第一个预处理语言模型（）</p>
-<h3 id="八卦时间"><a href="#八卦时间" class="headerlink" title="八卦时间"></a>八卦时间</h3><p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/11.png" alt="人物关系图"></p>
+<h2 id="独热码"><a href="#独热码" class="headerlink" title="独热码"></a>独热码</h2><p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/onehot.png" alt="one hot"><br>缺点：矩阵太大，而且极为稀疏</p>
+<h2 id="共现矩阵"><a href="#共现矩阵" class="headerlink" title="共现矩阵"></a>共现矩阵</h2><p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/4.png" alt="共现矩阵"><br>缺点：矩阵太大，而且极为稀疏</p>
+<h2 id="【2003年】-NNLM-基于前馈神经网络的-N-元神经语言模型"><a href="#【2003年】-NNLM-基于前馈神经网络的-N-元神经语言模型" class="headerlink" title="【2003年】 NNLM:基于前馈神经网络的 N 元神经语言模型"></a>【2003年】 NNLM:基于前馈神经网络的 N 元神经语言模型</h2><p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/5.jpg" alt="共现矩阵"></p>
+<h2 id="【2013年】-word2vec"><a href="#【2013年】-word2vec" class="headerlink" title="【2013年】 word2vec"></a>【2013年】 word2vec</h2><p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/1.jpg" alt="word2vec架构"><br>作为被大家公认的第一个预处理语言模型（）</p>
+<h3 id="八卦时间"><a href="#八卦时间" class="headerlink" title="八卦时间"></a>八卦时间</h3><p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/11.png" alt="人物关系图"></p>
 <p>word2vec的主要贡献并不是其结构，因为skip gram（预测+聚类） 和 CBOW（采样+完形填空）在传统方法中也有被用到（比如n元语法），也不是层次化的softmax（Hierarchical Softmax）和 负采样（negative sampling），毕竟这些写不成公式的方法都属于trick。<br>主要贡献是【词类比】。</p>
 <p>首先来解释word2vec中的各项技术：</p>
 <ol>
 <li>CBOW：continuous bag of words 连续词袋模型。可以理解为：用一个固定大小的窗口对语料库进行采样，并对采样后的样本做一个“完形填空”，用窗口中的周围词去预测中心词。</li>
 <li>skip gram：得到了预测到的中心词之后，再反过来用中心词去预测周围的词。从直觉上来说，同一个窗口中的词汇应该在某种程度上更加近似，所以skip gram就有点聚类的味道了。</li>
-<li>Hsoftmax: 可以先看一下softmax的函数图像 <img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/0.jpg" alt="softmax函数图像"> 如果直接预测，会分母太大，直接爆炸，因为少说也是大几千的token量。但如果分开来看，每一句都给一个softmax，那就不会产生爆炸，有点像激活函数和BN。</li>
+<li>Hsoftmax: 可以先看一下softmax的函数图像 <img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/0.jpg" alt="softmax函数图像"> 如果直接预测，会分母太大，直接爆炸，因为少说也是大几千的token量。但如果分开来看，每一句都给一个softmax，那就不会产生爆炸，有点像激活函数和BN。</li>
 <li>负采样：就是预测标签中的一个子集。因为整个标签集太大了，即使是现在的硬件水平做起来也很慢。</li>
 </ol>
 <p>那为什么词类比成了word2vec的主要贡献了呢？个人认为是它达到了一个【情理之中，意料之外】的效果。</p>
@@ -278,15 +278,15 @@
 <li>利用自回归（AR）对一个句子进行逐词预测。</li>
 <li>利用自编码方法（AE）对句子进行映射再重构。</li>
 </ol>
-<p>他们明确提出了，这两种算法可以为接下来的监督学习算法提供 “pretraining step”，换句话说这两种无监督训练得到的参数可以作为接下来有监督学习的模型的起始点，他们发现这样做了以后，可以使后续模型更稳定，泛化得更好，并且经过更少的训练，就能在很多分类任务上得到很不错的结果。<br><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/8.png" alt> </p>
+<p>他们明确提出了，这两种算法可以为接下来的监督学习算法提供 “pretraining step”，换句话说这两种无监督训练得到的参数可以作为接下来有监督学习的模型的起始点，他们发现这样做了以后，可以使后续模型更稳定，泛化得更好，并且经过更少的训练，就能在很多分类任务上得到很不错的结果。<br><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/8.png" alt> </p>
 <p>众所周知，RNN模型虽然对时序数据建模很强大，但是因为训练时需要 “back-propagation through time”， 所以训练过程是比较困难的。Dai 和 Le 提出的预训练的方法，可以帮助RNN更好的收敛和泛化，而且在特定业务上不需要额外的标注数据，只需要收集成本很低的无标注的文本。而且这些文本与你的特定业务越相关，效果就会越好，他们认为如此一来，这种做法就支持使用大量的无监督数据来帮助监督任务提高效果，在大量无监督数据上预训练以后只要在少量监督数据上fine-tuning就能获得良好的效果，所以他们给这篇论文取名为 “半监督序列学习”。</p>
 <h2 id="【2016年】context2vec-Learning-Generic-Context-Embedding-with-Bidirectional-LSTM"><a href="#【2016年】context2vec-Learning-Generic-Context-Embedding-with-Bidirectional-LSTM" class="headerlink" title="【2016年】context2vec: Learning Generic Context Embedding with Bidirectional LSTM"></a>【2016年】context2vec: Learning Generic Context Embedding with Bidirectional LSTM</h2><p>双向LSTM + mask</p>
 <p>这篇文章提出的idea是学习文本中包含上下文信息的embeddings。由于词在不同上下文可以有歧义，相同的指代词也经常在不同上下文中指代不同的实体。所以NLP任务中很重要的就是考虑每个词在其上下文中所应该呈现的向量表达方式。从摘要看，这篇文章的主要贡献，是它使用了双向的LSTM可以从一个比较大的文本语料中，有效地学到了包含上下文信息的embeddings，在很多词义消岐，完形填空的任务上都取得了不低于state-of-the-art的效果。同时他们提到，之前的研究有把上下文的独立embedding收集起来，或是进行简单的平均，而没有一个比较好的机制来优化基于上下文的向量表达。所以，他们提出了context2vec ，一个能够通过双向LSTM学习广泛上下文embedding的非监督的模型。</p>
-<p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/9.png" alt="softmax函数图像"></p>
-<p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/10.png" alt="softmax函数图像"></p>
-<h3 id="从这一年之后，NLP进入了大力出奇迹的时代"><a href="#从这一年之后，NLP进入了大力出奇迹的时代" class="headerlink" title="从这一年之后，NLP进入了大力出奇迹的时代"></a>从这一年之后，NLP进入了大力出奇迹的时代</h3><p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/3.jpg" alt></p>
+<p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/9.png" alt="softmax函数图像"></p>
+<p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/10.png" alt="softmax函数图像"></p>
+<h3 id="从这一年之后，NLP进入了大力出奇迹的时代"><a href="#从这一年之后，NLP进入了大力出奇迹的时代" class="headerlink" title="从这一年之后，NLP进入了大力出奇迹的时代"></a>从这一年之后，NLP进入了大力出奇迹的时代</h3><p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/3.jpg" alt></p>
 <h2 id="【2017年】ELMO"><a href="#【2017年】ELMO" class="headerlink" title="【2017年】ELMO"></a>【2017年】ELMO</h2><p>更大的双向LSTM。</p>
-<p>具体而言，ELMO的底层输入推荐使用已经学好的静态词向量比如Glove等，向上接两层的双向LSTM作为特征提取器，最终以语言模型作为训练任务进行学习。学好之后，每一个词会得到三个向量（底层，第一层拼接LSTM，第二层拼接LSTM），ELMO告诉你只要下游任务用到WordEmbedding的时候，就用产生的三个向量进行加权平均，其中的权重需要在新任务中进行学习。而这种方式也称为Feature-based Pre Training。<br><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/12.png" alt="ELMO指标"><br>相应的评价指标也都做到了在当时的SOTA，并比其他的高出5-25个百分点。这么好的效果和清晰地思路也使得该论文获得了NAACL2018最佳论文。不过，现在看来ELMO也有缺点，具体而言：</p>
+<p>具体而言，ELMO的底层输入推荐使用已经学好的静态词向量比如Glove等，向上接两层的双向LSTM作为特征提取器，最终以语言模型作为训练任务进行学习。学好之后，每一个词会得到三个向量（底层，第一层拼接LSTM，第二层拼接LSTM），ELMO告诉你只要下游任务用到WordEmbedding的时候，就用产生的三个向量进行加权平均，其中的权重需要在新任务中进行学习。而这种方式也称为Feature-based Pre Training。<br><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/12.png" alt="ELMO指标"><br>相应的评价指标也都做到了在当时的SOTA，并比其他的高出5-25个百分点。这么好的效果和清晰地思路也使得该论文获得了NAACL2018最佳论文。不过，现在看来ELMO也有缺点，具体而言：</p>
 <ol>
 <li>LSTM抽取特征的能力远弱于Transformer </li>
 <li>拼接方式双向融合特征融合能力偏弱。</li>
@@ -299,8 +299,8 @@
 <li>12个decoder：masked-attention（12个multi-head+768维）+ point-wise FFN（3072维）+ Adam + warm-up + GELU</li>
 </ol>
 <p>BERT刷榜</p>
-<p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/13.png" alt="BERT"></p>
-<p><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/14.png" alt="BERT刷榜"></p>
+<p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/13.png" alt="BERT"></p>
+<p><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/14.png" alt="BERT刷榜"></p>
 <h3 id="RoBERTa，屠榜神器"><a href="#RoBERTa，屠榜神器" class="headerlink" title="RoBERTa，屠榜神器"></a>RoBERTa，屠榜神器</h3><ol>
 <li>更大的训练集:16GB-&gt; 160GB</li>
 <li>更长的训练时间，6W美金训练一次。</li>
@@ -327,7 +327,7 @@
 <li>mask的训练假设是，被mask掉的词是统计独立，但显然不是。</li>
 <li>因为BERT的mask占位符在训练阶段有15%，这也就是说，BERT的训练效率只有15%。</li>
 </ol>
-<p>xlnet希望解决上述问题。<br>根据组合数学，一个由n个词汇组成的句子会产生n！个语言模型。xlnet利用了一个巧妙的方式在训练阶段学习到了这n！个语言模型。<br><img src="/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/15.jpg" alt></p>
+<p>xlnet希望解决上述问题。<br>根据组合数学，一个由n个词汇组成的句子会产生n！个语言模型。xlnet利用了一个巧妙的方式在训练阶段学习到了这n！个语言模型。<br><img src="/blog/blog/2021/03/11/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/15.jpg" alt></p>
 <!-- ## T-TA
 我们知道Transformer的核心运算是Attention(Q,K,V)，在BERT里边Q,K,V都是同一个，也就是Self Attention。而在MLM中，我们既然要建模p(xi|x∖{xi})，那么第i个输出肯定是不能包含第i个token的信息的，为此，第一步要做出的改动是：去掉Q里边的token输入，也就是说第一层的Attention的Q不能包含token信息，只能包含位置向量。这是因为我们是通过Q把K,V的信息聚合起来的，如果Q本身就有token信息，那么就会造成信息泄漏了。然后，我们要防止K,V的信息泄漏，这需要修改Attention Mask，把对角线部分的Attention（也就是自身的）给Mask掉，如图所示。
 
@@ -349,11 +349,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/29/%E5%8E%BB%E9%9B%BE/" rel="prev" title="去雾">
+    <a href="/blog/2021/01/29/%E5%8E%BB%E9%9B%BE/" rel="prev" title="去雾">
       <i class="fa fa-chevron-left"></i> 去雾
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="next" title="图神经网络">
+    <a href="/blog/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="next" title="图神经网络">
       图神经网络 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -431,7 +431,7 @@
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+          <a href="/blog/archives/">
         
           <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
@@ -506,30 +506,30 @@
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/js/utils.js"></script>
+<script src="/blog/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
+<script src="/blog/js/motion.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
 
 
-
-
-  
+<script src="/blog/js/next-boot.js"></script>
 
 
 
 
   
-<script src="/js/local-search.js"></script>
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
 
 
 

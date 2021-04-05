@@ -5,51 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/blog/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ruin2.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="写在前面~根据TTC课程《understanding COMPLEXITY》的听译编写了这个文档。不求精准（过程中可能存在听译错误、意译、口语化严重、翻译不准确等问题，见谅），但求知识传播。我本人对复杂系统非常感兴趣，因为它和人工智能有着某种密切联系。总之会持续更新，直到完结。一共12课，B站有资源，可以直接看。 hope you enjoy. 前言 根据一个复杂系统的科普视频写成本节https:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="复杂性理论">
-<meta property="og:url" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/index.html">
+<meta property="og:url" content="https://ruin2.github.io/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/index.html">
 <meta property="og:site_name" content="AIfuns">
 <meta property="og:description" content="写在前面~根据TTC课程《understanding COMPLEXITY》的听译编写了这个文档。不求精准（过程中可能存在听译错误、意译、口语化严重、翻译不准确等问题，见谅），但求知识传播。我本人对复杂系统非常感兴趣，因为它和人工智能有着某种密切联系。总之会持续更新，直到完结。一共12课，B站有资源，可以直接看。 hope you enjoy. 前言 根据一个复杂系统的科普视频写成本节https:">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/1.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/2.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/3.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/4.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/5.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/6.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/7.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/8.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/9.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/10.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/11.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/12.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/13.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/14.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/15.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/16.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/1.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/2.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/3.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/4.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/5.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/6.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/7.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/8.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/9.png">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/10.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/11.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/12.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/13.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/14.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/15.jpg">
+<meta property="og:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/16.png">
 <meta property="article:published_time" content="2020-03-06T12:07:26.000Z">
 <meta property="article:modified_time" content="2020-04-22T12:09:25.448Z">
 <meta property="article:author" content="李忠宇">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/1.jpg">
+<meta name="twitter:image" content="https://ruin2.github.io/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/1.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/">
+<link rel="canonical" href="https://ruin2.github.io/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/">
 
 
 <script id="page-configurations">
@@ -111,7 +111,7 @@
 
   <div class="site-meta">
 
-    <a href="/" class="brand" rel="start">
+    <a href="/blog/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">AIfuns</h1>
       <span class="logo-line-after"><i></i></span>
@@ -133,27 +133,27 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -211,10 +211,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/">
+    <link itemprop="mainEntityOfPage" href="https://ruin2.github.io/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
       <meta itemprop="name" content="李忠宇">
       <meta itemprop="description" content="">
     </span>
@@ -361,7 +361,7 @@
 <p>我们称这个相变特性为非线性。就比如第二宇宙速度是11.2，一个火箭一开始的速度是10.4，增加一点，到10.5，也还是冲不出地球，再加一点10.6也不行，再加一点10.7也不行，再加一点10.8也不行，.。。。最后加到了11.2，<font color="red">突然他就行了！</font>。这就是非线性系统的特性。</p>
 <p>教授举了个例子，学习非线性方程就像是学习non-elephants（盲人摸象？？？），人会淹死在数字的海洋中。</p>
 <h1 id="第二课-simple-rugged-and-danding-landscape"><a href="#第二课-simple-rugged-and-danding-landscape" class="headerlink" title="第二课 simple , rugged and danding landscape"></a>第二课 simple , rugged and danding landscape</h1><p>本节课我们将重点讲述landscape(地貌？)<br>我们将使用但不限于比喻的方式，比如想象我们正在爬坡，同样也要使用数学对象描述，这个对象是将函数的数值到一个特定的点作为地貌的高度。所以高度将扮演函数值的角色。我们将从最简单的可行的地貌说起，比如富士山，就像一个突出的椎体，你很容易就能够找到最高点。本次课程将会展示如何将现实中的问题，如经济，生态问题，转换成“富士山”（这样的地貌）。</p>
-<p>我们讨论的大多数问题都不是像富士山这样的（简单），这些问题有高峰有低谷，你很难一眼看到最高点，也会被困在很多地方。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/1.jpg" alt></p>
+<p>我们讨论的大多数问题都不是像富士山这样的（简单），这些问题有高峰有低谷，你很难一眼看到最高点，也会被困在很多地方。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/1.jpg" alt></p>
 <p>如果你站在阿巴拉契亚山道，你会看到很多山路都是向上指的，这时候就会迷失方向。</p>
 <p>像阿巴拉契亚这样的地貌就被称为崎岖。本次课程我们将会学习这些地貌是如何变得崎岖的，答案将会是智能体采取的选择和机会之间的相互作用。比如，设计一辆汽车，也许你觉得大重量能让一辆车更好，但实际上也许会事与愿违，因为你需要更沉的引擎才能带动整车的重量。因此，改变一个变量也许会得到局部最优，但实际上却会导致全局变得更糟糕。</p>
 <p>人们总是说复杂系统就像一个崎岖的地貌，这并不准确。复杂系统包含依赖性和自适应的智能体，这意味着，解的数值，地貌的最高点，取决于其他人的行为。这意味着一个人所处的高度会因为其他人的行动而改变。所以在本次课程中，我们将重点关注复杂系统是如何组成智能体之间的依赖关系，假设他们之间都是以某种关系相互关联的，而且是多样的。但关联性和多样性暂且不谈，因为我们更想知道地貌是如何变得崎岖的，以及地貌如何跳动。</p>
@@ -373,8 +373,8 @@
 </ul>
 <p>以上这三个地貌是本次课程的主题，所以这和复杂系统有什么关系？这些都仅仅是比喻吗？我们将要用上述这三个例子来解释，为什么有些问题可以被人和进化最优的解决，而另一些问题不能。另外，我们也将会窥见复杂关系诸如生态系统和经济系统和造核弹、治疗癌症等复杂问题的核心问题的不同。我们也将知道为什么解决一个困难问题的最好方式，又或是崎岖地貌问题，与如何在一个现实的复杂世界中存活的不同。所以，我们比喻的地貌，那个非常好的富士山地貌，是我们思考复杂问题的基本方式。记住，富士山地貌并不是一个比喻，而是一个确切的数学定义。地貌中点，实际上是你的动作，你的（一个动作的）解，而高度就相当于解的数值。在开始之前我们要先下两个定义，这两个定义是直觉的，同样也是很重要的：当我们看到一种地貌的时候，峰或者尖就是一个山岭的最高点。我们需要区分<font color="red">局部顶点</font>，这意味着无论朝着东南西北运动，高度都会下降；而<font color="red">全局顶点</font>则是整个地貌的最高点。所以，对富士山来说，它有一个局部顶点，这个局部顶点同样也是全局顶点；而阿拉巴契亚，则有很多很多的局部顶点。在重申一遍，富士山（那样的简单地貌）有一个局部顶点，而崎岖的地貌则有很多很多个局部顶点。</p>
 <p>现在我们就要思考，如何在崎岖地貌中寻找（全局）顶点。假设你有足够的时间能够遍历全局，那你就会很容易的找到全局顶点，对吧。但这实际上是不可能的，你会以更大的概率陷入局部最优。情况到了崎岖地貌这里就会出现很多问题，它不会像富士山那样仅有一个全局最优，而可能像洛基山脉那样有很多很多山峰。跳动地貌的关键特征就是它们频繁的运动变化， 所以你想要处于局部顶点，那你就要时刻的运动，意思是你要不断的去适应，去学习。以上这个idea是本课程的中心角色，过程中会被反复提及，这是因为：在复杂系统中，智能体不断的去适应，而陷入一个局部顶点。对于智能体的表现和回报，我们可以理解成地貌的高度。那么对于处在复杂系统中的公司啦，物种啦，都在以某种方式“爬坡”，让自己保持在崎岖地貌中的局部顶点，当然也有欧皇能爬到全局顶点，但没必要肝。所以，上述观点说明了一个问题，就是地貌高低可以代表行为或者选择的好坏程度，高度越高解越好。</p>
-<p>现在我们可以不用比喻，转而来点实在的。在之前的课程中，教授曾提出了一个观点，那就是这个世界变得越来越复杂了，导致了联系更加密切，依赖更加紧密，反映更为迅速。在二战时期，我们面对的问题基本都是工程问题：如何造战车，如何造导弹。而到了20世纪，许多涉及人工劳动在单一任务上的问题，比如铺设铁路，挖煤，拧螺丝，对于这一类问题，就有很多时间去试错了，而且良好的时间管理技术，使得找到全局最优成为可能。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/2.jpg" alt></p>
-<p>事实上，这种通过实验去找最优解的洞察能力率先在19世纪成为了支撑整个商业模式的方式，这被称为了<font color="red">科学管理</font>，或者是泰勒主义。泰勒是这方面的奠基人，他的一个经典案例就是铲煤。比方说我们现在要铲煤，但是这个铲子没有头，技术的说这就是根棍子。如果我们用这根棍子去铲煤，那么产能是零，对应的地貌高度就特别低，因此效能就很低也提不上回报。当铲子的头变得越来越大，我们就可以铲越来越多的煤，这时候我们就可以用工人在一个班次内的铲煤量来计算这个铲子的性能了。所以，提升铲子头的大小就能够提升铲煤量，对应的地貌高度就会变得更高；但有些时候铲子头太沉了，又会导致产煤量降低。在更长远看来，铲子头大小的提升会更加急剧的导致工人产能的降低，就比如铲子头变得像餐桌或者讲台那么大的时候，产能一样会降低至零。所以我们就可以将这个现实世界中的问题转化为数学方程，那就是一张图，这张图可以被想象成地貌。这时候，横轴可以代表铲子头的大小，纵轴代表产能效率。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/3.png" alt><br>如果将上图想象成地形图，那么我们就得到了一个二维的“富士山”。这种问题是比较容易解决的，也是比较好理解的，无论是用数学去算还是用实践去试错，都可以找到最优解，教授给出了这个最优解的高度是21磅。</p>
+<p>现在我们可以不用比喻，转而来点实在的。在之前的课程中，教授曾提出了一个观点，那就是这个世界变得越来越复杂了，导致了联系更加密切，依赖更加紧密，反映更为迅速。在二战时期，我们面对的问题基本都是工程问题：如何造战车，如何造导弹。而到了20世纪，许多涉及人工劳动在单一任务上的问题，比如铺设铁路，挖煤，拧螺丝，对于这一类问题，就有很多时间去试错了，而且良好的时间管理技术，使得找到全局最优成为可能。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/2.jpg" alt></p>
+<p>事实上，这种通过实验去找最优解的洞察能力率先在19世纪成为了支撑整个商业模式的方式，这被称为了<font color="red">科学管理</font>，或者是泰勒主义。泰勒是这方面的奠基人，他的一个经典案例就是铲煤。比方说我们现在要铲煤，但是这个铲子没有头，技术的说这就是根棍子。如果我们用这根棍子去铲煤，那么产能是零，对应的地貌高度就特别低，因此效能就很低也提不上回报。当铲子的头变得越来越大，我们就可以铲越来越多的煤，这时候我们就可以用工人在一个班次内的铲煤量来计算这个铲子的性能了。所以，提升铲子头的大小就能够提升铲煤量，对应的地貌高度就会变得更高；但有些时候铲子头太沉了，又会导致产煤量降低。在更长远看来，铲子头大小的提升会更加急剧的导致工人产能的降低，就比如铲子头变得像餐桌或者讲台那么大的时候，产能一样会降低至零。所以我们就可以将这个现实世界中的问题转化为数学方程，那就是一张图，这张图可以被想象成地貌。这时候，横轴可以代表铲子头的大小，纵轴代表产能效率。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/3.png" alt><br>如果将上图想象成地形图，那么我们就得到了一个二维的“富士山”。这种问题是比较容易解决的，也是比较好理解的，无论是用数学去算还是用实践去试错，都可以找到最优解，教授给出了这个最优解的高度是21磅。</p>
 <p>但当今世界已经早已不是泰勒的那个时代了，我们所面临的问题更加复杂，地貌更加崎岖，还伴随着跳跃。因此我们想尝试着建模跳跃的地貌。</p>
 <p>我们首先来探讨崎岖地貌。在崎岖地貌中寻找全局顶点并不是一件易事，因为概率空间很大，被称为combinatorically large（组合爆炸？）。而科学又不是能像展开地理图那样直观，顶点能被直接看见。所以为了找到全局最优，我们必须被迫的去寻找局部最优。进化就是典型的在解空间搜索的过程中（寻找全局最优）受到搜索步长的约束，物种不可能跨越老虎和大象，直接进化成“象虎”，一种体型巨大有着黑色条纹和獠牙的超级野兽。我们不是说象虎这种怪兽不可能存在（言外之意就是，象虎在解空间中是有可能存在的），而只是说解空间太大太大了，有无数种情况要去试，所以无法实现一个从老虎和大象两个物种直接跳跃的步长（因为这个步长根本不可测）。</p>
 <p>教授举了一个例子：比如今晚吃鸡，假设你要做一个全世界最美味的鸡料理，这就要涉及到原材料问题。你是要用土鸡，还是用玉米鸡，还是什么鸡，然后你又要用鸡的哪一部分？又要用什么烹饪方式？什么调料？好了，现在假设是场上有3种不同类型的鸡，鸡又可以有5种能吃的部分，烹饪方式20种，调料50种，这时候用排列组合的方式去计算一下，那就是3·5·20·50种排列组合，炸了。</p>
@@ -418,7 +418,7 @@
 <li>适应性/学习能力</li>
 </ul>
 <p>还要看这四个属性是如何形成复杂性的。</p>
-<p><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/4.png" alt></p>
+<p><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/4.png" alt></p>
 <p>如上图所示，我们来做一个拨号的实验。四个旋钮代表复杂系统的四个属性，数值0~10代表属性的程度。就比如多样性为0的时候，系统内所有的实体都相同；多样性为10的时候，，系统内所有的是挺都不相同。关联性为0的时候，实体都是孤立的；关联性为10的时候，所有的实体都是关联的，etc。<br>教授希望通过拨号的方式去观察到底是什么造成了复杂性，又是什么没有起作用。当然，这个实验是个思维实验。</p>
 <p>每当我们扭动旋钮的之后，就要想象发生了什么。</p>
 <p>好了，当我们真正扭动旋钮之后，发生的事情也许与我们的期望正好相反，越是极端，越是得不到复杂性。实际上，复杂性只能出现在一个区间中，教授喜欢称之为<font color="red">In-Between</font>。（也就是本次课程的题目，似乎翻译成中庸？）啥意思？解释一下就是，如果实体变得极度关联，那系统就越不复杂，我们就越容易得到统计规律。另一方面，如果实体的关联越是稀疏，那么系统就没有那么多动力去变得复杂。所以，系统也就必须在处于中庸状态的时候才会变得复杂：既不要简单的没什么关联，也不要复杂的到处都是关联。<br>现在，我们将四个属性都调出来，来看看复杂性是如何变化的。但在做此之前，我们必须要搞清楚，系统将会采取什么什么样的行为，所以我们也就可以辨识出哪些情况是复杂的，哪些情况不是。我们将要采用一个分类方法。但在开始之前我们将会非常仔细解释什么是要被归类的，我们将要归类系统本身、它所遵循的规则以及它的初始状态。</p>
@@ -470,7 +470,7 @@
 <p>那么要如何解释上述情形呢？回到化学实验，这和之前的生态理论模型很像，我们把很多种东西混合在一起，如果我们有很多的<font color="red">随机</font>种类（因为随机的东西是没有界限的），那么就会要么得到一坨糊糊，要么就是崩溃。再回到亚马逊的例子，每一个物种都是有各自的生态位的（老虎不可能像蜣螂那样吃屎），所以，这就使得系统有可能增进多样性而变得更加复杂，别不要去想着单纯的增加多样性就能够得到复杂性，而只能是事与愿违，要么崩溃，要么糊成一坨。这就像外来入侵物种一样，虽然增加了多样性，但是没有增加复杂性，而且还破坏了复杂性。</p>
 <p>好了，最后来讨论适应性/学习能力对复杂性的影响。当我们转动旋钮的时候并不是希望增强参与者（智能体）的适应性，因为这样会使得演化加速，系统变得没什么好聊的，而是增强参与者的学习能力，让参与者变得更加聪明。依旧是从零开始，让参与者的智商为零，没有学习能力，他们就是一个遵循法则的参与者。在后面的课程中会提到生命游戏（元胞自动机），虽然其中的参与者也是遵循一些法则而产生复杂性，但二者并不相同。所以现在我们面临了与之前对多样性和复杂性的讨论的问题，就如同化学和计算机，虽然我们可以把很多不同的东西混合在一起，但是我们得不到复杂性。这时候，学习能力就会起到很大帮助，系统中的参与者就知道了如何与其他参与者互动，也知道如何才能形成一个复杂的整体。现在我们将适应性旋钮转到最右边，然而答案却通常是陷入平衡，解释如下：假设系统保持流动，其中的参与者一定会想办法改变他们当前的行为，那么就一定有足够聪明的参与者已经改变了他们的行为。现在将这些参与者看成是人。如果所有人都是非常聪明的，我们的行为都会根据其他人的行为调整至最优，然后这个系统就应该是平衡的。又因为我们假设了系统不是平衡的，所以就应该会有人做一些不同的事情，因为假设人们足够聪明，因此应该早已经做了这些不同的事情。这不是说像石头剪刀布那样，最优化体现在下一个时间步。我们举的这个例子，最优化就应该是处于时时刻刻，这东西在博弈论中被称为纳什均衡，这是新古典经济学的一个核心观点，人们总是最初最优的选择（这就是理性人假设吧）。但如果人们总是最优，那我们就得不到复杂性，而是平衡态。这就是为什么我们的市场经济是复杂的，因为如果人足够聪明，那么经济市场时刻都是最优的，因而会陷入平衡态（这和陈平大佬对新古典经济学的批判是一样的，如果人人都是聪明的理性人，那么大家的最终收益都是0）。我们在接下来的课程中可以看到为什么负反馈并不是经济学一个的坏假设，另外，这也不一定对于所有情况都是好的假设。<br>另外就是，比如扑克，实际上扑克并不复杂，虽然它的情况很多，但是你只需要根据情况并按照一定规则作出反应就能胜利，因此并不有趣，只有玩家在处于中庸的时候才会觉得有趣。</p>
 <h1 id="第四课-Why-different-is-more"><a href="#第四课-Why-different-is-more" class="headerlink" title="第四课 Why different is more"></a>第四课 Why different is more</h1><p>在这节课中，我们聚焦于复杂系统中的差异性：种类的差异、或者是种类的多样性。就比如一种蓝色的小鸟（indigo bunting）：</p>
-<p><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/5.jpg" alt></p>
+<p><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/5.jpg" alt></p>
 <p>靛蓝彩旗之间的差异性很大，如果你想挑一只鸟，那么雄鸟擅飞，雌鸟擅鸣。相邻的靛蓝彩旗叫声会有一种模式，但是哪怕是超过了半英里，这种模式都会发生变化。所以当你看到了一种与上述描述相同的鸟，也许你会说，看，这就是靛蓝彩旗，但从技术的角度来说，这不太正确。你应当当说，这是整个靛蓝彩旗种群中的一只。为什么教授如此吹毛求疵？因为这种叫做靛蓝彩旗的鸟类，在基因型和表现型上都是不同的，所以每一只这种被称为靛蓝彩旗的小鸟的出生或者死亡，都在改变着这个种群的定义。靛蓝彩旗是我们对这种鸟类的种群区分，而不是一个固定的事实，有种深远的影响。这种差异可以导致适应性的产生。比如现在会有一个长达十年之久的干旱，靛蓝彩旗的唯一食物来源就是小坚果，那么他们就必须要有短的喙去啄开果壳。所以，如果想要活下去，那么鸟喙就必须变短，在经过几代的繁衍之后，整个种群的鸟喙都是短的，因此，对于什么是靛蓝彩旗的定义也会随之而发生变化。</p>
 <p>同样的陈述还体现在文化方面。这世间并没有法国人，而只是一类说法语的人。他们有着不一样的遗传基因、天赋、政治、技能。在本节课程中，我们将会讨论差异和多样性，这不可一并而论，而且两者对于复杂系统都是很重要的。本节课程将分成三个部分。</p>
 <p>第一部分将会讨论什么是多样性以及如何测量他们，达到一种弄清楚他们的目的。</p>
@@ -530,11 +530,11 @@
 <li>cause 3. different landscape.</li>
 <li>cause 4. dancing landscape.</li>
 </ul>
-<p>对于第一个原因，这是一个正反馈。这也许是多样性形成的最主要原因。越多的多样性就会产生更多的实体又转而产生更多的多样性。就比如你有一盒乐高积木，你可以用它来拼成很多东西。这时候再给你一盒不同的乐高积木，这两盒叠加在一起就会出现1+1&gt;2的效果。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/6.png" alt></p>
+<p>对于第一个原因，这是一个正反馈。这也许是多样性形成的最主要原因。越多的多样性就会产生更多的实体又转而产生更多的多样性。就比如你有一盒乐高积木，你可以用它来拼成很多东西。这时候再给你一盒不同的乐高积木，这两盒叠加在一起就会出现1+1&gt;2的效果。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/6.png" alt></p>
 <p>对于第二个原因，现代生物学家总是说适者生存。与其说竞争激烈，不如说适者生存，实际上不适应的已经没了，然后多样性就散开了。比如在商场里面，你可以看见人们穿着各异。此时如果你以熵去衡量就显得很不理智了。但如果你去律师事务所，就会发现里面的穿几乎都穿的差不多。为什么？在第一个例子中，人们没有太多的自然选择的压力，你穿什么都不会被赶出商场。但在商业中就不一样了，你穿着体面，人们就会觉得你是一个成功人士，靠得住。</p>
 <p>对于第三个原因，依旧以穿着为例。虽然商场里的人不必承受自然选择的压力，但是有的人就是想出众，就是想coooool，所以他们的穿着自然会和常人不同。这就引起了地貌的改变。 </p>
-<p><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/7.jpg" alt></p>
-<p>关于这方面最著名的一个例子是达尔文给出的。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/8.jpg" alt><br>同一种鸟在不同自然选择的压力下，进化出了不同的喙。他们在适应环境，也就是在崎岖地貌中爬坡的过程，尽管目的都是找顶点，但结果却是演化出了多样性。</p>
+<p><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/7.jpg" alt></p>
+<p>关于这方面最著名的一个例子是达尔文给出的。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/8.jpg" alt><br>同一种鸟在不同自然选择的压力下，进化出了不同的喙。他们在适应环境，也就是在崎岖地貌中爬坡的过程，尽管目的都是找顶点，但结果却是演化出了多样性。</p>
 <p>最后一种情况，跳跃地貌，也是引发多样性的原因之一。</p>
 <blockquote>
 <p>the coupling of the different landscapes can produce different outcomes.</p>
@@ -558,7 +558,7 @@
 <p>对于第二点，临时生存能力。进化是受限的，路线上的每一个步骤都要可行。所以人类进化出眼睛的每一个步骤都必须是可行的，这和我们心脏的四个心室是同一个道理，只有在进化的道路上进化出了心室这个实体才有可能最终形成四个心室。就比如在某一个进化步骤上进化出了两个心室，那么进化出四个心室才有可能。也许你的工程师朋友可能会说他的产品虽然现在还没做出来但是已经很接近了，��很可惜的是进化的字典里可没有接近这个词。</p>
 <p>对于第三点，进化受限于其基因，不可能转变到另一种编码。但在创造型系统中就不一样。在之前我们讨论过，创造型系统中是不存在崎岖地貌的。对于创造型系统来说，创造性的行为是由对一个新问题应用全新的模式所构成的。</p>
 <p>对于第四点，创造型系统可以回溯和重新启用idea和产品。对于创造型系统自然不必多说，对于进化型系统来说，基因中确实包含曾经的某些片段，但就拿大象来说，它的祖先也许是猛犸象，但是大象永远不可能返祖，变成猛犸象了。</p>
-<p>所以，以上四个观点都说明了在某种情况下，创造型系统是比进化型系统更加多样的。但我们似乎忘记了一件事情：龟兔赛跑和那句名言：稳扎稳打才能赢。进化是无情的，虽然它很慢，但是它很稳，而且坚持不懈。它会慢慢试错。但在创造系统中，人们就很茫然，很难去尝试不同领域结合解决问题。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/9.png" alt></p>
+<p>所以，以上四个观点都说明了在某种情况下，创造型系统是比进化型系统更加多样的。但我们似乎忘记了一件事情：龟兔赛跑和那句名言：稳扎稳打才能赢。进化是无情的，虽然它很慢，但是它很稳，而且坚持不懈。它会慢慢试错。但在创造系统中，人们就很茫然，很难去尝试不同领域结合解决问题。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/9.png" alt></p>
 <p>最后，为什么多样性重要？</p>
 <p>diversity produces innovation</p>
 <p>举例来说，就是更多的乐高积木能够出现更多的创意作品。这时候就以爱迪生举例了。爱迪生的实验室里面有各种瓶瓶罐罐，这些就是他的乐高积木，爱迪生可以随意组合，但是这些是组合爆炸的，这些组合都是多样性的体现，大力出奇迹，总归是能够组合出一些让人眼前一亮的创造的。</p>
@@ -567,7 +567,7 @@
 <p>exploration: searching for better solutions<br>探索，我指的是智能体寻找更好的解决方法，如爬到更高的地貌。搜索的更多，就有更多的机会去寻找更好的行动方式。<br>exploitation: taking advantage of what you know</p>
 </blockquote>
 <p>利用：利用你所知道的，收割你在过去探索中的利益。<br>这种权衡，在持续探索或是利用之间的权衡，对于处在复杂系统中的智能体来说是家常便饭。就比如你想在纽约找一个熟食品店，纽约有数千个熟食品店，而且熟食品店会不断的出现，已经存在的熟食品店不断的适应环境：他们会更换菜单和供应商。如果你愿意，你可以一直去探索，但是熟食店的品质有均值，因此不断的探索，只能得到处于均值的品质。所以，有些时候你需要做的就是，利用手头现有的信息。所以，有些时候你需要的仅仅是利用收集到的信息，但如果你停止了探索，而选择了利用你现有的信息，你可能会错过更好的选择，更糟糕的是，你对于一家店的忠诚也许会导致其他店的降价。所以（随着地貌的变化），也许那些曾经是最好的地方反而还达不到普通水平。<br>所以，你要么保持现状，要么继续探索，你所要做的，就是平衡探索和利用（balance exploration aganinst exploitation）.<br>在本节课中，我们将了解到复杂系统中的行为者是如何以及为什么要保持这种平衡，另外，我们还要弄明白为什么这么做（保持平衡）会导致复杂性。<br>再过去的课程中我们了解到，少量的联系和内在关联性不会产生复杂性，而是会产生一些独立的事件。反之则会产生复杂性或者gray goo。我们也知道，复杂性的出现要处于中庸的状态。那我们就要思考了，如果之前所说的旋钮都处于正中间的时候会出现复杂性，那么这些旋钮究竟是怎么被扭到中间的呢？</p>
-<p>本次课程的基本观点是基于探索和利用的平衡，我们将在一个崎岖地貌问题，也就是two-armed bandit问题中，讨论探索和利用，而且我们也会介绍一些比较cool的算法，这些算法很好的平衡了探索和利用，被称为退火算法。这种方式最开始是从物理现象中取得的灵感，进而被用来解决一些问题。然后我们就会讲到演化系统，去看看一些进化的基本机制，比如进化、免疫、重组、选择，这些都可以被看作是探索与利用之间平衡的表现。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/10.jpg" alt><br>在一些赌场中你可以看到类似的赌博机，一般的赌博机都是单臂的。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/11.jpg" alt><br>而我们现在要说的是这种双臂的赌博机。所以，这一场赌博就是在寻找探索与利用之间的平衡。在之前的单臂赌博机中，我们拉动拉杆就知道赢了还是输了，但是这种方式并不具备复杂性，因为毕竟只有一个拉杆，即使你兜里有1000个硬币去赌博，最后也只能是知道赔了还是赚了。但是如果我们用这1k个硬币去双臂赌博机赌博的时候，情况就不一样了。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/12.jpg" alt><br>如上图所示，我们可以看到，左右两个拉杆得到的回报是不一样的，所以，假设你就探索到这里了，你也许会把剩下的980个硬币都投给右臂。但如果你继续探索，左右拉杆各十次，左边的回报是4，右边的回报是6，那么你也许就会得到结论，真的还是右边的拉杆得到的回报多。<br>再以登山者举例，登山者每走一步都可以判断这一步是向上还是向下了，如果是向上，那说明他再朝着好的方向发展，如果是向下了，那么他可以退回一步，这样，他不断的搜索不断的搜索，最终可以达到“山顶”，因为他四周都是向下的情况。如果是富士山的话，那么登山者很容易找到山峰，但是如果换成非常崎岖的洛基山脉这样崎岖的地貌，那么这个登山者就会被局部的山丘困住，因为山丘的四周也都是向下。<br>所以，在问题很简单的情况下，我们很容易找到那个山峰，但对于复杂的问题（崎岖的地貌），这个山峰就很难找到了。上述的登山者搜索山峰的方式被计算机科学家成为贪心所搜，意思是贪心并不总是最好的。所以我们需要更多的神经元去进行搜索，让登山者摆脱局部最优。搜索的方法就是多一点探索，少一点利用，相较于贪心算法。<br>这种搜索方法被称为退火算法，这种算法是在曼哈顿工程期间被发明的，<br>然后又举了切叶蚁的栗子。</p>
+<p>本次课程的基本观点是基于探索和利用的平衡，我们将在一个崎岖地貌问题，也就是two-armed bandit问题中，讨论探索和利用，而且我们也会介绍一些比较cool的算法，这些算法很好的平衡了探索和利用，被称为退火算法。这种方式最开始是从物理现象中取得的灵感，进而被用来解决一些问题。然后我们就会讲到演化系统，去看看一些进化的基本机制，比如进化、免疫、重组、选择，这些都可以被看作是探索与利用之间平衡的表现。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/10.jpg" alt><br>在一些赌场中你可以看到类似的赌博机，一般的赌博机都是单臂的。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/11.jpg" alt><br>而我们现在要说的是这种双臂的赌博机。所以，这一场赌博就是在寻找探索与利用之间的平衡。在之前的单臂赌博机中，我们拉动拉杆就知道赢了还是输了，但是这种方式并不具备复杂性，因为毕竟只有一个拉杆，即使你兜里有1000个硬币去赌博，最后也只能是知道赔了还是赚了。但是如果我们用这1k个硬币去双臂赌博机赌博的时候，情况就不一样了。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/12.jpg" alt><br>如上图所示，我们可以看到，左右两个拉杆得到的回报是不一样的，所以，假设你就探索到这里了，你也许会把剩下的980个硬币都投给右臂。但如果你继续探索，左右拉杆各十次，左边的回报是4，右边的回报是6，那么你也许就会得到结论，真的还是右边的拉杆得到的回报多。<br>再以登山者举例，登山者每走一步都可以判断这一步是向上还是向下了，如果是向上，那说明他再朝着好的方向发展，如果是向下了，那么他可以退回一步，这样，他不断的搜索不断的搜索，最终可以达到“山顶”，因为他四周都是向下的情况。如果是富士山的话，那么登山者很容易找到山峰，但是如果换成非常崎岖的洛基山脉这样崎岖的地貌，那么这个登山者就会被局部的山丘困住，因为山丘的四周也都是向下。<br>所以，在问题很简单的情况下，我们很容易找到那个山峰，但对于复杂的问题（崎岖的地貌），这个山峰就很难找到了。上述的登山者搜索山峰的方式被计算机科学家成为贪心所搜，意思是贪心并不总是最好的。所以我们需要更多的神经元去进行搜索，让登山者摆脱局部最优。搜索的方法就是多一点探索，少一点利用，相较于贪心算法。<br>这种搜索方法被称为退火算法，这种算法是在曼哈顿工程期间被发明的，<br>然后又举了切叶蚁的栗子。</p>
 <h1 id="Emergence-I-：-why-more-is-Different"><a href="#Emergence-I-：-why-more-is-Different" class="headerlink" title="Emergence I ： why more is Different"></a>Emergence I ： why more is Different</h1><p>在这一章中，我们要了解一个复杂系统中的神奇现象：涌现。</p>
 <blockquote>
 <p>emergence : the spontaneous creation of order and functionality from the bottom up</p>
@@ -662,13 +662,13 @@
 <li>systems can tip.比如在一个池塘中，鱼、藻、氮气是平衡的，随着氮气不断的增多，一开始倒没什么，鱼类可以通过增加种群数量来减少过多的藻类，但超过了临界点，那么藻类就会大量繁殖而导致鱼类死亡。富营养导致生态系统崩溃。；；蜜蜂可以感受温度，如果温度低了，那么它们就会加热温度；如果温度高了，它们就会降低温度。而当温度太高的时候，就无能为力了。</li>
 <li>tipping goes in one direction.以第一点的例子继续说明：系统一旦超过了临界点就不会再回到之前的状态了，具体来说就是：一旦甜党和咸党在宏观层面形成了分离，那么他们就不会再混合到一起了。所以分离的状态比混合的状态更加稳定。</li>
 </ol>
-<p>我们听了这么多的正反馈和负反馈，听起来很像系统动力学，而且确实也是。我们以奶牛和草为例：<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/13.jpg" alt><br>奶牛和草形成了正负反馈。</p>
+<p>我们听了这么多的正反馈和负反馈，听起来很像系统动力学，而且确实也是。我们以奶牛和草为例：<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/13.jpg" alt><br>奶牛和草形成了正负反馈。</p>
 <p>系统动力学模型和复杂系统之间的对比：</p>
 <ol>
 <li>no heterogeneity within the boxes（box指的是：之前在例子中，奶牛和草都是用box框定的，box代表了实体，意思是实体内不含异质，这表明动态系统中，同一种实体之间是不存在差异的。而在复杂系统中，这个假设明显是错的。）</li>
 <li>(in system dynamics model ) “place” is not included（这在之前说过，一些模型是不考虑空间的。但实际上牛总不能只吃一块地上的草吧。）</li>
 </ol>
-<h1 id="The-Sand-Pile-Self-Organized-Criticality"><a href="#The-Sand-Pile-Self-Organized-Criticality" class="headerlink" title="The Sand Pile : Self-Organized Criticality"></a>The Sand Pile : Self-Organized Criticality</h1><p>在这节课中将讨论复杂系统是如何产生大事件的。关于解释这个现象的理论被称为【自组织临界性】。如果个体行为聚合在一起就会在宏观上形成群体模式。<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/14.jpg" alt><br>一个系统被称为是临界的，如果小行为触发了级联效应。比如萨拉热窝事件（斐迪南公爵被杀，导致一战）。<br>复杂系统有产生大事件的潜力，但这并不代表者复杂系统天天产生大事件。而正好与之相反，有这种潜力的复杂系统却经常产生很多很多小事件。<br>本课程目标：</p>
+<h1 id="The-Sand-Pile-Self-Organized-Criticality"><a href="#The-Sand-Pile-Self-Organized-Criticality" class="headerlink" title="The Sand Pile : Self-Organized Criticality"></a>The Sand Pile : Self-Organized Criticality</h1><p>在这节课中将讨论复杂系统是如何产生大事件的。关于解释这个现象的理论被称为【自组织临界性】。如果个体行为聚合在一起就会在宏观上形成群体模式。<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/14.jpg" alt><br>一个系统被称为是临界的，如果小行为触发了级联效应。比如萨拉热窝事件（斐迪南公爵被杀，导致一战）。<br>复杂系统有产生大事件的潜力，但这并不代表者复杂系统天天产生大事件。而正好与之相反，有这种潜力的复杂系统却经常产生很多很多小事件。<br>本课程目标：</p>
 <ol>
 <li>distinguish between normal distributions and long tailed distributions.</li>
 <li>describe a simple random walk model that produces a power law distribution.</li>
@@ -680,7 +680,7 @@
 <p>Event sizes follow a power law if the probability of an event of size x is proportional to x raised to some negative power.如果大小为x的事件的概率与x的负次方成正比，则事件大小遵循幂律。</p>
 </blockquote>
 <p>那么问题来了，我们是否可以搞出来一些模型能产生幂律分布？这似乎非常的逆向工程，而且科学家通常也不会这么做。</p>
-<p>我们来做个无聊的游戏，扔硬币。正面你给我一块钱，反面我给你一块钱。那么硬币的序列可能是hhthtt,所以我的收益就是0,1,2,1,2,1,0。这被称为随机游走，因为是随机的。我们可以去数，多少轮投币会让收益回归到0，这个操作被数学家称为return time。那么return time 的分布就是幂律分布。同时我们也观察到，幂律分布有很多很多小事件，但同时也会有偶尔的大事件。但随机游走模型似乎并没有解释复杂系统产生大事件的现象。不过随机游走却能解释冰川分布问题。体会下图<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/15.jpg" alt></p>
+<p>我们来做个无聊的游戏，扔硬币。正面你给我一块钱，反面我给你一块钱。那么硬币的序列可能是hhthtt,所以我的收益就是0,1,2,1,2,1,0。这被称为随机游走，因为是随机的。我们可以去数，多少轮投币会让收益回归到0，这个操作被数学家称为return time。那么return time 的分布就是幂律分布。同时我们也观察到，幂律分布有很多很多小事件，但同时也会有偶尔的大事件。但随机游走模型似乎并没有解释复杂系统产生大事件的现象。不过随机游走却能解释冰川分布问题。体会下图<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/15.jpg" alt></p>
 <p>但我们希望能够有更好的模型去解释复杂系统中的大事件。</p>
 <blockquote>
 <p>Per Bak’s sand pile model of self-organized criticality<br>这个模型也是参见上图。那么在模型中我们能发现什么呢？物理学家Bak，汤超，Wiesenfeld用著名的”沙堆模型”(sandpile model)以形象地说明自组织临界态的形成及特点 。他们曾设想过一个理想实验:通过装置让沙子一次一粒均匀地落在桌上，形成逐渐增高的一小堆，借助慢速录像和计算机模仿等手段精确地计算沙堆顶部落下一粒沙会带动多少沙粒移动; 初始阶段，沙子下落对沙堆整体的影响不大; 当沙堆的高度达到一定程度以后，一颗沙子的落下可能引发整个沙堆的崩塌。 实验结果产生了”自组织临界”理论:沙堆达到”临界”状态后，所有沙都处于一个整体的状态， 新下落的沙子会在周围产生扰动，这些扰动虽微细，却能够在整个沙堆中传递，使得沙堆的结构产生变化， 沙堆的结构将随每粒新沙落下而变得愈加脆弱，最终发生沙堆的崩塌。在到达临界态后，沙崩规模的大小与其出现的频率呈幂函数关系。</p>
@@ -720,7 +720,7 @@
 </blockquote>
 <p>在复杂系统中，选择充当了筛选器的作用，如果一种基因不适应环境，那么它就会在进化过程中渐渐消失。公司里也有类似的机制，比如升值。但是如果公司觉得应该给表现最好的人升职的时候，就要考虑这个人是不是能够团队合作，如果自私的人得到了提拔，那么渐渐的，公司就会GG。</p>
 <p>再比如karl sims，他写了一个模仿进化的仿真程序，让智能体在虚拟空间中移动，评价这个智能体优劣的标准就是测量质心移动的距离。</p>
-<p>在这个过程中，他发现了一个非常神奇的现象：这个程序里面进化出了一个非常高的高塔，它通过倒下的方式前进，这似乎非常不可思议。但细究一下，这个模型用的是什么样的选择方式，智能体的表现如何评估，用的是什么lever（杠杆）。仔细一想，之前的高塔生物就很好解释了，因为程序是通过质心移动距离的方式对智能体的表现进行评估，所以高塔只需要倒下就能很快的前进了。<br>那么这是怎么解决的呢？作者修改了评估方法：通过计算生物体内的全部像素的最小移动距离来评估生物表现的好坏。最后就搞出了下图所示的情况：<br><img src="/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/16.png" alt></p>
+<p>在这个过程中，他发现了一个非常神奇的现象：这个程序里面进化出了一个非常高的高塔，它通过倒下的方式前进，这似乎非常不可思议。但细究一下，这个模型用的是什么样的选择方式，智能体的表现如何评估，用的是什么lever（杠杆）。仔细一想，之前的高塔生物就很好解释了，因为程序是通过质心移动距离的方式对智能体的表现进行评估，所以高塔只需要倒下就能很快的前进了。<br>那么这是怎么解决的呢？作者修改了评估方法：通过计算生物体内的全部像素的最小移动距离来评估生物表现的好坏。最后就搞出了下图所示的情况：<br><img src="/blog/blog/2020/03/06/%E5%A4%8D%E6%9D%82%E6%80%A7%E7%90%86%E8%AE%BA/16.png" alt></p>
 <blockquote>
 <p>This video shows results from a research project involving simulated Darwinian evolutions of virtual block creatures. A population of several hundred creatures is created within a supercomputer, and each creature is tested for their ability to perform a given task, such the ability to swim in a simulated water environment. Those that are most successful survive, and their virtual genes containing coded instructions for their growth, are copied, combined, and mutated to make offspring for a new population. The new creatures are again tested, and some may be improvements on their parents. As this cycle of variation and selection continues, creatures with more and more successful behaviors can emerge. The creatures shown are results from many independent simulations in which they were selected for swimming, walking, jumping, following, and competing for control of a green cube.</p>
 </blockquote>
@@ -768,11 +768,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/06/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%962/" rel="prev" title="关系抽取2">
+    <a href="/blog/2020/03/06/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%962/" rel="prev" title="关系抽取2">
       <i class="fa fa-chevron-left"></i> 关系抽取2
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/03/11/%E4%BB%8E%E5%8B%92%E8%AE%A9%E5%BE%B7%E5%8F%98%E6%8D%A2%E5%88%B0%E5%9B%BE%E5%83%8F%E8%87%AA%E7%9B%91%E7%9D%A3/" rel="next" title="从勒让德变换到图像自监督">
+    <a href="/blog/2020/03/11/%E4%BB%8E%E5%8B%92%E8%AE%A9%E5%BE%B7%E5%8F%98%E6%8D%A2%E5%88%B0%E5%9B%BE%E5%83%8F%E8%87%AA%E7%9B%91%E7%9D%A3/" rel="next" title="从勒让德变换到图像自监督">
       从勒让德变换到图像自监督 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -850,7 +850,7 @@
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+          <a href="/blog/archives/">
         
           <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
@@ -925,30 +925,30 @@
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/js/utils.js"></script>
+<script src="/blog/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
+<script src="/blog/js/motion.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
 
 
-
-
-  
+<script src="/blog/js/next-boot.js"></script>
 
 
 
 
   
-<script src="/js/local-search.js"></script>
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
 
 
 
