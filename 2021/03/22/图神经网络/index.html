@@ -29,10 +29,11 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/1.gif">
 <meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/5.jpg">
 <meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/3.jpg">
 <meta property="og:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2.jpg">
 <meta property="article:published_time" content="2021-03-22T08:55:49.000Z">
-<meta property="article:modified_time" content="2021-04-05T12:40:09.347Z">
+<meta property="article:modified_time" content="2021-04-14T13:05:33.685Z">
 <meta property="article:author" content="李忠宇">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/1.gif">
@@ -229,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-05 20:40:09" itemprop="dateModified" datetime="2021-04-05T20:40:09+08:00">2021-04-05</time>
+                <time title="修改时间：2021-04-14 21:05:33" itemprop="dateModified" datetime="2021-04-14T21:05:33+08:00">2021-04-14</time>
               </span>
 
           
@@ -306,7 +307,7 @@
 <td style="text-align:center">节点和边的数量</td>
 </tr>
 <tr>
-<td style="text-align:center">$V = {v_1,\cdots,v_n}$</td>
+<td style="text-align:center">$V = { v_1,\cdots,v_n }$</td>
 <td style="text-align:center">顶点集</td>
 </tr>
 <tr>
@@ -318,7 +319,7 @@
 <td style="text-align:center">邻接矩阵</td>
 </tr>
 <tr>
-<td style="text-align:center">$D(i,i)=\sum<em>{j} A</em>{ij}$</td>
+<td style="text-align:center">$D(i,i) = \sum<em>j A</em>{ij}$</td>
 <td style="text-align:center">对角度矩阵</td>
 </tr>
 <tr>
@@ -460,19 +461,16 @@
 <p>【<font color="yellow">解决问题的具体方法及实验</font>】：</p>
 <p><strong>在算法方面</strong>：</p>
 <ul>
-<li>节点之间的消息传递：</li>
+<li><p>节点之间的消息传递：</p>
+<script type="math/tex; mode=display">m_v^{t+1} = \sum_{w \in N(v)} M_t(h_v^t,h_w^t,F^{e})</script><p>  上式的含义是，节点$v$的消息传递是汇聚了它自身的信息$h_v^t$以及它邻居节点的消息$h_w^t$和邻边的消息$F^{e}$。但凡能用上的消息基本都用上了。</p>
+</li>
 </ul>
-<pre><code>$m_v^{t+1} = \sum_{w \in N(v)} M_t(h_v^t,h_w^t,F^{e})$
-
-上式的含义是，节点$v$的消息传递是汇聚了它自身的信息$h_v^t$以及它邻居节点的消息$h_w^t$和邻边的消息$F^{e}$。但凡能用上的消息基本都用上了。
-</code></pre><ul>
+<ul>
 <li><p>消息更新的方式：</p>
-<p>  $h_v^{t+1}=U(h_v^t,m_v^{t+1})$</p>
-<p>  这里只需要说一下$U$实际上是一个状态更新函数。通常用<code>add</code>,<code>mean</code>,<code>max</code>.但<code>max</code>是不可微的，所以使用的时候要注意。</p>
+<script type="math/tex; mode=display">h_v^{t+1}=U(h_v^t,m_v^{t+1})</script><p>  这里只需要说一下$U$实际上是一个状态更新函数。通常用<code>add</code>,<code>mean</code>,<code>max</code>.但<code>max</code>是不可微的，所以使用的时候要注意。</p>
 </li>
 <li><p>图表征方法（readout）:</p>
-<p>  $y=R({h_v^T|v \in G})$</p>
-<p>  $y$是一个向量，它表征了整个图。</p>
+<script type="math/tex; mode=display">y=R(\{h_v^T|v \in G\})</script><p>  $y$是一个向量，它表征了整个图。</p>
 </li>
 </ul>
 <p><strong>在实验数据方面</strong>，本论文在其开发的图建模环境MPNN下，通过错误率和运行时间两方面来证明MPNN框架的可行性和实用性。但是具体的数据我并没有认真研究，因为MPNN的亮点是其图建模的思想（毕竟我太菜了，也找不到比MPNN更早的相关研究了。主要是懒）。</p>
@@ -510,9 +508,8 @@
 <p>LINE的目标函数是一个由一阶相似和二阶相似共同拼凑的。</p>
 <p>首先是一阶近似的目标函数：</p>
 <ol>
-<li><p>定义两个节点之间的概率</p>
-<script type="math/tex; mode=display">p_{ij} = \frac{1}{1+exp(-v_i,v_j)} \tag{1}</script></li>
-<li><p>定义两个节点之间的经验概率。这里需要说明的是，$z<em>{ij}$是一个非0即1的数。因为边权的数值是不确定的，有时候很大有时候很小，这会导致梯度的大幅波动，因为方差实在是太大了。所以作者很巧妙的使用了01数值来局部归一化。所以，$Z$就代表了边权的数值（只能是整数），$z</em>{ij}$要看两个节点间是否有边相连，有就是1，没有就是0.</p>
+<li>定义两个节点之间的概率<script type="math/tex; mode=display">p_{ij} = \frac{1}{1+exp(-v_i,v_j)} \tag{1}</script></li>
+<li><p>定义两个节点之间的经验概率。这里需要说明的是，$z<em>{ij}$ 是一个非0即1的数。因为边权的数值是不确定的，有时候很大有时候很小，这会导致梯度的大幅波动，因为方差实在是太大了。所以作者很巧妙的使用了01数值来局部归一化。所以，$Z$ 就代表了边权的数值（只能是整数），$z</em>{ij}$ 要看两个节点间是否有边相连，有就是1，没有就是0.</p>
 <script type="math/tex; mode=display">\hat{p}_{ij} = \frac{z_{ij}}{Z} \tag{2}</script><script type="math/tex; mode=display">Z = \sum_{(i,j)\in E}z_{ij}</script></li>
 <li><p>$(1)$和$(2)$代表了两个节点之间的相关性，那么我们直接联立两个方程，就可以得到一个误差值，这个误差值就代表了两个节点的一阶相似度（也可以看成是距离）。在原文中，作者使用了KL散度来计算这个距离。</p>
 <script type="math/tex; mode=display">d(p,\hat{p}) = KL(p,\hat{p}) = \sum_{(i,j)\in E}z_{ij}\log{p(v_i,v_j)}</script></li>
@@ -547,6 +544,35 @@
 </li>
 <li>在二阶相似的定义方面：因为在源码中，$v_j$的向量和context(也就是$v_k$，是$v_i$的全部邻域)的向量实际上都是依靠$v_j$做嵌入的，所以当前节点$v_i$的邻域信息，也就是BFS采样，并没有充分利用。如果简化来看，这种方法甚至比deepwalk还简单（LINE在极端条件下实际上就采样了一个点…也就是$v_j$）。</li>
 </ol>
+<h2 id="node2vec-Scalable-Feature-Learning-for-Networks"><a href="#node2vec-Scalable-Feature-Learning-for-Networks" class="headerlink" title="node2vec: Scalable Feature Learning for Networks"></a>node2vec: Scalable Feature Learning for Networks</h2><p>【<font color="yellow">论文题目</font>】:网络的可扩展特征学习</p>
+<p>【<font color="yellow">概述</font>】:如何捕捉邻居节点的多样性特征一直以来都是一个难题。node2vec首次提出了一种启发式的灵活采样方法，该方法结合了DFS和BFS的精髓，并且作者认为这种采样方法能够有效的反映出节点的特性。其中的核心观点就是：</p>
+<ol>
+<li>邻近的节点应该相似</li>
+<li>“朋友圈”相同的节点也应该相似。</li>
+</ol>
+<p>【<font color="yellow">需要解决的问题</font>】:蕴含更多更丰富信息的采样方法。</p>
+<p>【<font color="yellow">这个问题为什么重要</font>】：节点的向量表示在不同的采样策略下，有着不同的表示方法，而且原文中也指出，目前（2016）还没有一种通用的良好表示方法。所以，采样方法在很大程度上决定了节点向量表示学习的能力。而深度学习框架下的采样方法也几乎都是DFS和BFS，一种很自然的想法就是将二者结合。但之前的LINE算法在本质上属于拼接了DFS和BFS，而DeepWalk只有BFS，所以node2vec就搞出了启发式算法来融合DFS和BFS，作者们也认为，灵活的采样方法能够获取更加丰富的表示信息。</p>
+<p>【<font color="yellow">解决之后有什么好处</font>】：让节点的嵌入向量包含更多更丰富的信息，用以处理下游任务。并且可以更快更好的学习节点的嵌入表示。</p>
+<p>【<font color="yellow">解决问题的前提条件或者是假设</font>】：</p>
+<p>【<font color="yellow">解决问题的具体方法</font>】：</p>
+<ol>
+<li>skip-gram:<script type="math/tex; mode=display">\max_v \sum_{u\in \mathcal{N}(v)} \log{p}(\mathcal{N}(v)|v) \tag{1}</script>其中，$v$代表节点的向量。这个公式的含义就是，依靠节点$v$来最大可能的预测其周围邻居。相当于NLP中的skip-gram</li>
+<li>条件独立:<script type="math/tex; mode=display">\log{p}(\mathcal{N}(v)|v)=\prod_{u\in \mathcal{v}}p(u|v) \tag{2}</script>有了这个假设，子图就可以按节点进行分割了。</li>
+<li>特征空间的对称性（我个人觉得，写成排列无关性更好）：<script type="math/tex; mode=display">p(n|v)=\frac{exp(n\cdot v)}{\sum_{u\in \mathcal{v}} exp(u\cdot v)} \tag{3}</script>这个公式是说，起始点$v$和终点$n$之间的概率关系与两者之间节点的排列顺序无关。<br>根据上述三个等式，最终的优化目标可以写为：<script type="math/tex; mode=display">\max_{v} \sum_{u\in \mathcal{N}(v)}[-\log{Z_u} + \sum_{n\in \mathcal{N}(u)}n\cdot u]</script>其中：<script type="math/tex; mode=display">Z_u = \sum_{u\in \mathcal{N}(v)} u\cdot v</script></li>
+<li><p>search bias:这是一种启发式的搜索策略。就是在搜索的过程中设置不同的转移概率$\alpha$（可以理解为一种阻力）。<br><img src="/2021/03/22/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/5.jpg" alt></p>
+<ol>
+<li>如果节点$t$和$v$共享同一个邻居$x_1$，那么$\alpha$就是1</li>
+<li>$t$和$v$构成的边的$\alpha$是$\frac{1}{p}$</li>
+<li><p>其他情况为$\frac{1}{q}$</p>
+<p>当然了，真正的$\alpha$还需要和边权$w<em>{vu}$相乘，所以真正的转移概率应该是$\alpha \cdot w</em>{vu}$。<br>另外，每次采样过后，中心节点都会变更，这样才能保证采样的多样性。</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>【<font color="yellow">实验</font>】：所有的实验结果以OGB为准。</p>
+<p>【<font color="yellow">结论</font>】：转移概率在本文中充当了胶水的角色，很好的将BFS和DFS结合在了一起。这种启发式的算法比DeepWalk和LINE这两种最优化算法要好一些。</p>
+<p>【<font color="yellow">源码解析</font>】：以后再补。</p>
+<p>【<font color="yellow">个人评价</font>】：从论文的实验结果来看，启发式确实是比最优化的采样方法要好。但更重要的信息是，不同的采样方法对结果的影响非常巨大，而且node2vec的超参$p$和$q$仍旧有讨论的空间，但更大的舞台还是设计新的采样方法。</p>
 <h2 id="Inductive-Representation-Learning-on-Large-Graphs"><a href="#Inductive-Representation-Learning-on-Large-Graphs" class="headerlink" title="Inductive Representation Learning on Large Graphs"></a>Inductive Representation Learning on Large Graphs</h2><p>【<font color="yellow">论文题目</font>】：<font color="cyan"> 大图的归纳表示学习 </font></p>
 <p>【<font color="yellow">概述</font>】：之前的节点嵌入方法都是直接计算一整个较小的图，因此泛化能力差，而且对于新的节点的嵌入显得束手无策。本文采用近邻采样的方法对大图中的节点的嵌入向量进行学习。这种学习方法并非传统的直接学习节点的向量表示，而是去训练聚合器来间接学习节点的向量表示。而且学习目标不仅仅是节点的向量表示，还包括了节点的分布。这种方法速度快，效果好，对未知的节点嵌入也有较高的鲁棒性。</p>
 <p>【<font color="yellow">需要解决的问题</font>】：大图中的节点表示学习</p>
@@ -572,6 +598,11 @@
 <pre><code>1. 大规模图数据在训练时的采样问题
 2. 我个人另外一个理解是：能优化期望的估计值。
 </code></pre><p>【这个问题为什么重要】：因为大规模的图数据会导致内存爆炸或者运算量过大的问题<br>【解决之后有什么好处】：<br>【解决问题的具体方法及实验】：<br>【结论】：</p>
+<!-- pip install torch-scatter -f https://pytorch-geometric.com/whl/torch-1.8.0+cu111.html
+pip install torch-sparse -f https://pytorch-geometric.com/whl/torch-1.8.0+cu111.html
+pip install torch-cluster -f https://pytorch-geometric.com/whl/torch-1.8.0+cu111.html
+pip install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-1.8.0+cu111.html
+pip install torch-geometric -->
 
     </div>
 
@@ -657,7 +688,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#【图神经网络】文献阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">【图神经网络】文献阅读笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文统一的符号"><span class="nav-number">1.2.</span> <span class="nav-text">本文统一的符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文献阅读笔记法"><span class="nav-number">1.3.</span> <span class="nav-text">文献阅读笔记法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关术语及概念"><span class="nav-number">1.4.</span> <span class="nav-text">相关术语及概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-New-Model-for-Learning-in-Graph-Domains"><span class="nav-number">1.5.</span> <span class="nav-text">A New Model for Learning in Graph Domains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Graph-Neural-Network-Model"><span class="nav-number">1.6.</span> <span class="nav-text">The Graph Neural Network Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-to-GraphNeural-Networks"><span class="nav-number">1.7.</span> <span class="nav-text">Introduction to GraphNeural Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neural-Message-Passing-for-Quantum-Chemistry"><span class="nav-number">1.8.</span> <span class="nav-text">Neural Message Passing for Quantum Chemistry</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图上的采样方法"><span class="nav-number">2.</span> <span class="nav-text">图上的采样方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DeepWalk-Online-Learning-of-Social-Representations"><span class="nav-number">2.1.</span> <span class="nav-text">DeepWalk: Online Learning of Social Representations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LINE-Large-scale-Information-Network-Embedding"><span class="nav-number">2.2.</span> <span class="nav-text">LINE: Large-scale Information Network Embedding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inductive-Representation-Learning-on-Large-Graphs"><span class="nav-number">2.3.</span> <span class="nav-text">Inductive Representation Learning on Large Graphs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaptive-Sampling-Towards-Fast-Graph-Representation-Learning"><span class="nav-number">2.4.</span> <span class="nav-text">Adaptive Sampling Towards Fast Graph Representation Learning</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#【图神经网络】文献阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">【图神经网络】文献阅读笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文统一的符号"><span class="nav-number">1.2.</span> <span class="nav-text">本文统一的符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文献阅读笔记法"><span class="nav-number">1.3.</span> <span class="nav-text">文献阅读笔记法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关术语及概念"><span class="nav-number">1.4.</span> <span class="nav-text">相关术语及概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-New-Model-for-Learning-in-Graph-Domains"><span class="nav-number">1.5.</span> <span class="nav-text">A New Model for Learning in Graph Domains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Graph-Neural-Network-Model"><span class="nav-number">1.6.</span> <span class="nav-text">The Graph Neural Network Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-to-GraphNeural-Networks"><span class="nav-number">1.7.</span> <span class="nav-text">Introduction to GraphNeural Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neural-Message-Passing-for-Quantum-Chemistry"><span class="nav-number">1.8.</span> <span class="nav-text">Neural Message Passing for Quantum Chemistry</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图上的采样方法"><span class="nav-number">2.</span> <span class="nav-text">图上的采样方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DeepWalk-Online-Learning-of-Social-Representations"><span class="nav-number">2.1.</span> <span class="nav-text">DeepWalk: Online Learning of Social Representations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LINE-Large-scale-Information-Network-Embedding"><span class="nav-number">2.2.</span> <span class="nav-text">LINE: Large-scale Information Network Embedding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node2vec-Scalable-Feature-Learning-for-Networks"><span class="nav-number">2.3.</span> <span class="nav-text">node2vec: Scalable Feature Learning for Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inductive-Representation-Learning-on-Large-Graphs"><span class="nav-number">2.4.</span> <span class="nav-text">Inductive Representation Learning on Large Graphs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaptive-Sampling-Towards-Fast-Graph-Representation-Learning"><span class="nav-number">2.5.</span> <span class="nav-text">Adaptive Sampling Towards Fast Graph Representation Learning</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

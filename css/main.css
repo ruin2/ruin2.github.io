@@ -281,14 +281,14 @@ kbd {
 }
 table {
   width: 100%; /*表格宽度*/
-  max-width: 65em; /*表格最大宽度，避免表格过宽*/
+  max-width: 150em; /*表格最大宽度，避免表格过宽*/
   border: 1px solid #dedede; /*表格外边框设置*/
   margin: 15px auto; /*外边距*/
   border-collapse: collapse; /*使用单一线条的边框*/
 }
 table th,
 table td {
-  height: 35px; /*统一每一行的默认高度*/
+  height: 50px; /*统一每一行的默认高度*/
   border: 1px solid #dedede; /*内部边框样式*/
   padding: 0 10px; /*内边距*/
 }
@@ -1183,7 +1183,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffb6a1;
+  background: #fc00ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
